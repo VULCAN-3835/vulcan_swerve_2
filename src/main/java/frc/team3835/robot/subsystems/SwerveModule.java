@@ -20,26 +20,27 @@ import frc.team3835.robot.Constants;
 public class SwerveModule {
 
     // Motors + Sensors
-    private TalonFX driveMotor;
-    private TalonFX steerMotor;
-    private CANCoder absEncoder;
+    private TalonFX driveMotor; // CR: what is driveMotor?
+    private TalonFX steerMotor; // CR: what is steerMotor?
+    private CANCoder absEncoder; // CR: ... documenting
 
     // States
     private SwerveModuleState target;
     private SwerveModuleState state;
 
-    //
+
     private double trueZero;
     private double driveOutput;
 
     // Control
-    private SimpleMotorFeedforward ff;
-    private double positionError;
+    private SimpleMotorFeedforward ff; // CR: the name 'ff'?
+    private double positionError;// CR: don't declare them here
     private double positionErrorTicks;
     private double positionErrorDeadzone;
     private double falconPosition;
 
-    public SwerveModule(int driveMotorPort, int steerMotorPort, int absEncPort, double trueZero, boolean driveInverted) {
+    public SwerveModule(int driveMotorPort, int steerMotorPort, int absEncPort,
+                        double trueZero, boolean driveInverted) {
         // Ports setup
         this.driveMotor = new TalonFX(driveMotorPort);
         this.steerMotor = new TalonFX(steerMotorPort);
@@ -49,10 +50,10 @@ public class SwerveModule {
         this.driveMotor.setNeutralMode(NeutralMode.Brake);
         this.steerMotor.setNeutralMode(NeutralMode.Brake);
 
-        this.driveMotor.config_kP(0, Constants.SwerveConstants.driveP);
+        this.driveMotor.config_kP(0, Constants.SwerveConstants.driveP); // TODO: find pid values
         this.driveMotor.config_kI(0, Constants.SwerveConstants.driveI);
         this.driveMotor.config_kD(0, Constants.SwerveConstants.driveD);
-
+        // CR: line too long
         driveMotor.configMotionAcceleration((Constants.SwerveConstants.maxAcceleration*Constants.SwerveConstants.pulseToMeterFalcon)/10); // Acceleration(m/s^2) in Pulses per 100ms
         driveMotor.setSelectedSensorPosition(0);
 
@@ -76,13 +77,22 @@ public class SwerveModule {
         this.steerMotor.set(TalonFXControlMode.PercentOutput, 0);
     }
 
-    public void set(double angle, double speed) {
+    public void set(double angle, double speed) { //
         this.target.angle = Rotation2d.fromDegrees(angle);
         this.target.speedMetersPerSecond = speed;
         set(this.target);
     }
-    
-    public void set(SwerveModuleState target) {
+
+
+    /**
+     * CR: document in this form
+     *
+     * @param  url  an absolute URL giving the base location of the image
+     * @param  name the location of the image, relative to the url argument
+     * @return      the image at the specified URL
+     * @see         Image
+     */
+    public void set(SwerveModuleState target) { // CR: document every line
         this.target = target;
         this.state = SwerveModuleState.optimize(this.target, Rotation2d.fromDegrees(getTrueAngle()));
 

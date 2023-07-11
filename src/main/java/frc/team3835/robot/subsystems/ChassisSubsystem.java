@@ -13,11 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.Constants.SwerveConstants;
 
-public class ChassisSubsystem extends SubsystemBase {
+public class ChassisSubsystem extends SubsystemBase { // CR: document
   // An enum with the names of the wheel modules
   public enum wheels {
-    left_front, right_front,
-    right_back, left_back
+    left_front, right_front, right_back, left_back
   }
 
   // An array of the four swerve Modules
@@ -26,8 +25,12 @@ public class ChassisSubsystem extends SubsystemBase {
   // Gyro 
   private AHRS imu;
 
-  public ChassisSubsystem() {
-    this.swerve_modules[wheels.left_front.ordinal()] = new SwerveModule(Constants.ChassisConstants.LEFT_FRONT_DRIVE, Constants.ChassisConstants.LEFT_FRONT_STEER, Constants.ChassisConstants.LEFT_FRONT_ENC, Constants.ChassisConstants.LEFT_FRONT_ZERO, Constants.ChassisConstants.LEFT_FRONT_INVERTED);
+  public ChassisSubsystem() { // CR: don't pass the white line
+    this.swerve_modules[wheels.left_front.ordinal()] = new SwerveModule(Constants.ChassisConstants.LEFT_FRONT_DRIVE,
+            Constants.ChassisConstants.LEFT_FRONT_STEER,
+            Constants.ChassisConstants.LEFT_FRONT_ENC,
+            Constants.ChassisConstants.LEFT_FRONT_ZERO,
+            Constants.ChassisConstants.LEFT_FRONT_INVERTED);
     this.swerve_modules[wheels.right_front.ordinal()] = new SwerveModule(Constants.ChassisConstants.RIGHT_FRONT_DRIVE, Constants.ChassisConstants.RIGHT_FRONT_STEER, Constants.ChassisConstants.RIGHT_FRONT_ENC, Constants.ChassisConstants.RIGHT_FRONT_ZERO, Constants.ChassisConstants.RIGHT_FRONT_INVERTED);
     this.swerve_modules[wheels.left_back.ordinal()] = new SwerveModule(Constants.ChassisConstants.LEFT_BACK_DRIVE, Constants.ChassisConstants.LEFT_BACK_STEER, Constants.ChassisConstants.LEFT_BACK_ENC, Constants.ChassisConstants.LEFT_BACK_ZERO, Constants.ChassisConstants.LEFT_BACK_INVERTED);
     this.swerve_modules[wheels.right_back.ordinal()] = new SwerveModule(Constants.ChassisConstants.RIGHT_BACK_DRIVE, Constants.ChassisConstants.RIGHT_BACK_STEER, Constants.ChassisConstants.RIGHT_BACK_ENC, Constants.ChassisConstants.RIGHT_BACK_ZERO, Constants.ChassisConstants.RIGHT_BACK_INVERTED);
