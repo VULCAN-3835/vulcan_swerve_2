@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.Constants.SwerveConstants;
+import frc.team3835.robot.commands.TeleopDriveCommand;
 
 public class ChassisSubsystem extends SubsystemBase { 
   // An enum with the names of the wheel modules
@@ -50,7 +51,7 @@ public class ChassisSubsystem extends SubsystemBase {
     Constants.ChassisConstants.RIGHT_BACK_ZERO, 
     Constants.ChassisConstants.RIGHT_BACK_INVERTED);
 
-    setDefaultCommand(null); // TODO: Default Command
+    setDefaultCommand(new TeleopDriveCommand(this));
   }
 
  /**

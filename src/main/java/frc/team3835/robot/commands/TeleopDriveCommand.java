@@ -5,11 +5,16 @@
 package frc.team3835.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.team3835.robot.OI;
+import frc.team3835.robot.subsystems.ChassisSubsystem;
 
 public class TeleopDriveCommand extends CommandBase {
-  /** Creates a new TeleopDriveCommand. */
-  public TeleopDriveCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private ChassisSubsystem swerveDrive;
+
+  public TeleopDriveCommand(ChassisSubsystem swerveDrive) {
+    this.swerveDrive = swerveDrive;
+
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +23,9 @@ public class TeleopDriveCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    this.swerveDrive.drive(OI.getRightJoystickX(),OI.getRightJoystickY(),OI.getLeftJoystickX(),false);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

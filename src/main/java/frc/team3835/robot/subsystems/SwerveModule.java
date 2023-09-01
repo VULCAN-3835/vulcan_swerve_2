@@ -110,8 +110,8 @@ public class SwerveModule {
             Constants.SwerveConstants.steerMotorThreshold*Math.signum(positionErrorDeadzone));
         }
 
-        
-        this.driveMotor.set(TalonFXControlMode.Velocity, (driveOutput*Constants.SwerveConstants.pulseToMeterFalcon)/10, DemandType.ArbitraryFeedForward, ff.calculate(driveOutput));   
+        this.driveMotor.set(TalonFXControlMode.PercentOutput, driveOutput);
+        // this.driveMotor.set(TalonFXControlMode.Velocity, (driveOutput*Constants.SwerveConstants.pulseToMeterFalcon)/10, DemandType.ArbitraryFeedForward, ff.calculate(driveOutput));   
     }
 
     private double getTrueAngle() { // Making sure values are within the -180 to 180 range and returning the true position by using the offset
