@@ -30,7 +30,7 @@ public class LedSubsystem extends SubsystemBase {
 
         ArrayList<LedSection> ledSections = new ArrayList<>();
         ledSections.add(new LedSection(22, false, false, states1));
-        this.ledController = new LedSectionController(PWM_PORT, 2, ledSections);
+        this.ledController = new LedSectionController(2, ledSections);
 
     }
 

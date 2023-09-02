@@ -8,11 +8,11 @@ public class BlinkLedEffect extends TimedLedEffect {
 
     private final Color8Bit secondaryColor;
 
-    public BlinkLedEffect(Color8Bit mainColor, int length, int frequency) {
+    public BlinkLedEffect(Color8Bit mainColor, int length, double frequency) {
         this(mainColor, length, frequency, new Color8Bit(0,0,0));
     }
 
-    public BlinkLedEffect(Color8Bit mainColor, int length, int frequency, Color8Bit secondaryColor) {
+    public BlinkLedEffect(Color8Bit mainColor, int length, double frequency, Color8Bit secondaryColor) {
         super(mainColor, length, frequency);
         this.secondaryColor = secondaryColor;
     }

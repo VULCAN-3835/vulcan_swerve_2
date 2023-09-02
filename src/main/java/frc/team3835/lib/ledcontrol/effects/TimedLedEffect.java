@@ -16,4 +16,9 @@ public abstract class TimedLedEffect extends LedEffect{
 
     protected abstract void next();
 
+    @Override
+    public Color8Bit[] getPixelArray() {
+        next();
+        return super.getPixelArray();
+    }
 }

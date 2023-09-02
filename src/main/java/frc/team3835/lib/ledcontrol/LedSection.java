@@ -11,6 +11,10 @@ public class LedSection {
     private final boolean inverted;
     private final Map<Integer,LedEffect> ledEffectMap;
 
+    public LedSection(int length, Map<Integer, LedEffect> ledEffectMap){
+        this(length, false, false, ledEffectMap);
+    }
+
     public LedSection(int length, boolean centralized, boolean inverted, Map<Integer,LedEffect>  ledEffectMap) {
         this.length = length;
         this.centralized = centralized;
