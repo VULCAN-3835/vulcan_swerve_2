@@ -52,4 +52,13 @@ public class LedSection {
     private void invert(List list){
         Collections.reverse(list);
     }
+
+    @Override
+    public String toString() {
+        LedEffect effect = this.ledEffectMap.get(state);
+        List<Color8Bit> list = Arrays.asList(effect.getPixelArray());
+        for (item:list){
+
+        }
+    }
 }

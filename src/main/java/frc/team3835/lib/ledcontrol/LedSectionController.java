@@ -19,7 +19,9 @@ public class LedSectionController extends LedController{
     public void updateBuffer(int state) {
         int i = 0;
         for (LedSection section: this.ledSectionList) {
+            System.out.println("section=" + section);
             for (Color8Bit color :section.getColors(state)) {
+                System.out.println("i=" + i + ", color=" + color);
                 this.ledBuffer.setLED(i, color);
                 i++;
             }
