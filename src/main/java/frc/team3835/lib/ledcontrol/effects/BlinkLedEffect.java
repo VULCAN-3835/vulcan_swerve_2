@@ -20,10 +20,10 @@ public class BlinkLedEffect extends TimedLedEffect {
     @Override
     protected void next() {
         if ((tick/((int)(TPS/ frequency)))%2 == 0){
-            Arrays.fill(super.output, super.mainColor);
+            Arrays.fill(super.colorArray, super.mainColor);
         }
         else {
-            Arrays.fill(super.output, this.secondaryColor);
+            Arrays.fill(super.colorArray, this.secondaryColor);
         }
         tick++;
     }

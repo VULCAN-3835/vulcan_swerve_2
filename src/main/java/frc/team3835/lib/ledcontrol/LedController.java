@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 
 public class LedController { // TODO: document every file in this package (and sub-packages)
     private double power_supply;
-    private final AddressableLED led; // WIP's AddressableLED
-    private AddressableLEDBuffer ledBuffer; // WIP's AddressableLED
+    protected final AddressableLED led; // WIP's AddressableLED
+    protected AddressableLEDBuffer ledBuffer; // WIP's AddressableLED
     private static final double AMPS_PER_LED = 0.02;
     public LedController(int pwm_port, int total_length, double power_supply){
         this.power_supply = power_supply;
@@ -23,7 +23,7 @@ public class LedController { // TODO: document every file in this package (and s
         this.led.setLength(this.ledBuffer.getLength()); //sets length
     }
 
-    public void update(){
+    public void updateBuffer(){
 
     }
 

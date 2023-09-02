@@ -4,18 +4,18 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 
 public abstract class LedEffect {
     protected Color8Bit mainColor;
-    protected Color8Bit[] output;
+    protected Color8Bit[] colorArray;
 
     protected LedEffect(Color8Bit mainColor, int length){
         this.mainColor = mainColor;
-        this.output = new Color8Bit[length];
+        this.colorArray = new Color8Bit[length];
     }
     
     public Color8Bit[] getPixelArray(){
-        return output;
+        return colorArray;
     }
 
     public void setLength(int length){
-        this.output = new Color8Bit[length];
+        this.colorArray = new Color8Bit[length];
     }
 }

@@ -8,7 +8,7 @@ public class StaticLedEffect extends LedEffect{
 
     public StaticLedEffect(Color8Bit mainColor, int length){
         super(mainColor, length);
-        Arrays.fill(super.output, super.mainColor);
+        Arrays.fill(super.colorArray, super.mainColor);
     }
 
 }
