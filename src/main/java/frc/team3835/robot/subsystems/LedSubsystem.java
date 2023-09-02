@@ -1,7 +1,10 @@
 package frc.team3835.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team3835.lib.ledcontrol.LedController;
 import frc.team3835.lib.ledcontrol.LedSection;
 import frc.team3835.lib.ledcontrol.LedSectionController;
 import frc.team3835.lib.ledcontrol.effects.LedEffect;
@@ -12,12 +15,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LedSubsystem extends SubsystemBase {
-    private final int PWM_PORT = 9;
+    private final int PWM_PORT = 3;
     private final Color8Bit RED = new Color8Bit(255, 0, 0);
     private final Color8Bit GREEN = new Color8Bit(0, 255, 0);
     private final Color8Bit BLUE = new Color8Bit(0, 0, 255);
     private final Color8Bit PURPLE = new Color8Bit(255,0,255);
-    LedSectionController ledController;
+    //LedSectionController ledController;
+    LedController ledController;
+
     public LedSubsystem(){
         HashMap<Integer, LedEffect> states1 = new HashMap<>(2);
         states1.put(0, new StaticLedEffect(RED, 22));
@@ -31,6 +36,6 @@ public class LedSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        this.ledController.updateBuffer(0);
+
     }
 }

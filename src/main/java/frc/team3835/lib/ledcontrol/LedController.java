@@ -23,8 +23,14 @@ public class LedController { // TODO: document every file in this package (and s
         this.led.setLength(this.ledBuffer.getLength()); //sets length
     }
 
-    public void updateBuffer(){
+    public AddressableLEDBuffer getLedBuffer() {
+        return ledBuffer;
+    }
 
+    public void updateBuffer(){
+        normalizeBuffer();
+        led.setData(ledBuffer);
+        led.start();
     }
 
     public void normalizeBuffer(){

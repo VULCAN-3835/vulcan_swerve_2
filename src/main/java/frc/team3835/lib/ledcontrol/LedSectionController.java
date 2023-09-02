@@ -26,7 +26,6 @@ public class LedSectionController extends LedController{
                 i++;
             }
         }
-        led.setData(ledBuffer);
-        led.start();
+        super.updateBuffer();
     }
 }
