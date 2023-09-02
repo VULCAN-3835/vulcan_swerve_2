@@ -8,7 +8,7 @@ package frc.team3835.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.team3835.robot.subsystems.LedSubsystem;
 
 
 /**
@@ -19,10 +19,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer
 {
-    
+    LedSubsystem ledSubsystem;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
+        this.ledSubsystem = new LedSubsystem();
         // Configure the trigger bindings
         configureBindings();
     }
