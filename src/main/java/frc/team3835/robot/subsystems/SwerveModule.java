@@ -10,11 +10,14 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
-
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3835.robot.Constants;
+import frc.team3835.robot.util.Conversions;
+import jdk.incubator.vector.VectorOperators;
 
 /** Add your docs here. */
 public class SwerveModule {
@@ -32,7 +35,7 @@ public class SwerveModule {
     private double driveOutput; // The output given to wheels
 
     // Control
-    private SimpleMotorFeedforward feedforward; // FeedForward controler 
+    private SimpleMotorFeedforward feedforward; // FeedForward controler
 
     public SwerveModule(int driveMotorPort, int steerMotorPort, int absEncPort,
                         double trueZero, boolean driveInverted) {
@@ -48,20 +51,21 @@ public class SwerveModule {
         this.driveMotor.config_kP(0, Constants.SwerveConstants.driveP); // TODO: find pid values
         this.driveMotor.config_kI(0, Constants.SwerveConstants.driveI);
         this.driveMotor.config_kD(0, Constants.SwerveConstants.driveD);
-        
+
         driveMotor.configMotionAcceleration //Max Acceleration(m/s^2) in Pulses per 100ms
-        ((Constants.SwerveConstants.maxAcceleration*Constants.SwerveConstants.pulseToMeterFalcon)/10); 
+        ((Constants.SwerveConstants.maxAcceleration*Constants.SwerveConstants.pulseToMeterFalcon)/10);
 
-        driveMotor.setSelectedSensorPosition(0); // Sets the position of falcon encoder to 0
+        this.steerMotor.config_kP(0, Constants.SwerveConstants.steerP);
+        this.steerMotor.config_kI(0, Constants.SwerveConstants.steerI);
+        this.steerMotor.config_kD(0, Constants.SwerveConstants.steerD);
 
-        this.steerMotor.config_kP(0, Constants.SwerveConstants.steerP); // TODO: find pid values
-        this.steerMotor.config_kI(0, Constants.SwerveConstants.steerP);
-        this.steerMotor.config_kD(0, Constants.SwerveConstants.steerP);
-
-        this.absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180); // -180 to 180
+        this.steerMotor.setInverted(driveInverted);
 
         // Angle which is considered zero for encoder
         this.trueZero = trueZero;
+
+        this.absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180); // -180 to 180
+        this.absEncoder.configMagnetOffset(this.trueZero);
 
         // Feedforward setup
         this.feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.feedForwardKs, Constants.SwerveConstants.feedForwardKv);
@@ -93,17 +97,16 @@ public class SwerveModule {
      *
      * @param  target  The desired target state of the module
      */
-    public void set(SwerveModuleState target) { 
+    public void set(SwerveModuleState target) {
         this.target = target;
-        this.state = SwerveModuleState.optimize(this.target, Rotation2d.fromDegrees(getTrueAngle()));
+        this.state = SwerveModuleState.optimize(this.target, Rotation2d.fromDegrees(GetTrueAngle()));
 
         double positionError; // The error between desired wheel position and current one
         double positionErrorTicks; // The error between desired wheel position and current one in ticks
         double positionErrorDeadzone; // The acceptable deadzone for wheel position
         double falconPosition; // The current position of the falcon encoder
 
-        this.driveOutput = this.state.speedMetersPerSecond; // Output for drive motor
-        positionError = this.state.angle.minus(Rotation2d.fromDegrees(getTrueAngle())).getDegrees(); // Calculates the error between current state and desired one
+        positionError = this.state.angle.minus(Rotation2d.fromDegrees(GetTrueAngle())).getDegrees(); // Calculates the error between current state and desired one
         positionErrorTicks = positionError * Constants.SwerveConstants.ticksPerDegree; // Transfers error into falcon ticks
         positionErrorDeadzone = Math.abs(positionError) > 1 ? positionError : 0; // Checks if value is within deadzone threshhold
         falconPosition = this.steerMotor.getSelectedSensorPosition(); // Finds current position of falcon sensor
@@ -115,20 +118,24 @@ public class SwerveModule {
             Constants.SwerveConstants.steerMotorThreshold*Math.signum(positionErrorDeadzone));
         }
 
-        
-        this.driveMotor.set(TalonFXControlMode.Velocity, // Sets the drive motor using velocity control mode
-        (driveOutput*Constants.SwerveConstants.pulseToMeterFalcon)/10, 
-        DemandType.ArbitraryFeedForward, 
-        feedforward.calculate(driveOutput));   
-    }
+        this.driveOutput = this.state.speedMetersPerSecond; // Output for drive motor
+        this.driveMotor.set(TalonFXControlMode.PercentOutput, driveOutput*0.4);
 
+        this.driveOutput = Conversions.MPSToFalcon(this.state.speedMetersPerSecond, Units.inchesToMeters(2), 6.75);
+//        this.driveMotor.set(TalonFXControlMode.Velocity, driveOutput, DemandType.ArbitraryFeedForward, ff.calculate(driveOutput));
+    }
     /**
      * Finds the true angle of the motor
      *
      * @return  The absolute true angle of the module
      */
-    private double getTrueAngle() { // Making sure values are within the -180 to 180 range and returning the true position by using the offset
-        return -((((this.absEncoder.getAbsolutePosition()-this.trueZero)+180)%360)-180);
+    public double GetTrueAngle() { // Making sure values are within the -180 to 180 range and returning the true position by using the offset
+        return this.absEncoder.getAbsolutePosition();
+
     }
+    public double GetVel() {
+        return this.driveMotor.getSelectedSensorVelocity();
+    }
+
 
 }
