@@ -27,7 +27,7 @@ public final class Constants
         public static final double pulseToMeterFalcon = 43310.195537448053576162384741371; // TODO: Fact check
         public static final double ticksPerDegree = 70.9; // TODO: Fact Check
 
-        public static final double steerP = 0.125; // TODO: Find appropriate pid values, (Previous: 0.125)
+        public static final double steerP = 0.1; // TODO: Find appropriate pid values, (Previous: 0.125)
         public static final double steerI = 0;
         public static final double steerD = 0;
 
@@ -43,8 +43,6 @@ public final class Constants
         public static final double steerMotorThreshold = 0.04; // TODO: Check minimul power required to move motor
     }
     public static class ChassisConstants {
-        // TODO: Fill in ports
-        // TODO: Find true zeros
         public static final int LEFT_FRONT_DRIVE = 12; // CAN ID
         public static final int RIGHT_FRONT_DRIVE = 10; // CAN ID
         public static final int LEFT_BACK_DRIVE = 11; // CAN ID
@@ -60,15 +58,15 @@ public final class Constants
         public static final int LEFT_BACK_ENC = 31; // CAN ID
         public static final int RIGHT_BACK_ENC = 33; // CAN ID
         // Offsets for absolute encoders:
-        public static final double LEFT_FRONT_ZERO = 0;
-        public static final double RIGHT_FRONT_ZERO = 0;
-        public static final double LEFT_BACK_ZERO = 0;
-        public static final double RIGHT_BACK_ZERO =  0;
+        public static final double LEFT_FRONT_ZERO = -177.1875;
+        public static final double RIGHT_FRONT_ZERO = -62.66;
+        public static final double LEFT_BACK_ZERO = 169.36;
+        public static final double RIGHT_BACK_ZERO =  -34.8;
         // Which motors are inverted                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        public static final boolean frontLeftDriveInverted = true;
         public static final boolean LEFT_FRONT_INVERTED = true;
-        public static final boolean RIGHT_FRONT_INVERTED = true;
+        public static final boolean RIGHT_FRONT_INVERTED = false;
         public static final boolean LEFT_BACK_INVERTED = true;
-        public static final boolean RIGHT_BACK_INVERTED = true;
+        public static final boolean RIGHT_BACK_INVERTED = false;
 
         // Max speed in meters per second
         public static final double kMaxSpeedMetersPerSecond = 4;
@@ -76,14 +74,14 @@ public final class Constants
         public static final double kTrackWidth = 0.35*2.54;
         // Distance between front and back wheels on robot
         public static final double kWheelBase = 0.35*2.54;
-        
+
         // Swerve Kinematics
         public static final SwerveDriveKinematics kDriveKinematics =
-            new SwerveDriveKinematics(
-                new Translation2d(kWheelBase / 2, -kTrackWidth / 2), //Left front
-                new Translation2d(kWheelBase / 2, kTrackWidth / 2), //Right front
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), //Left back
-                new Translation2d(-kWheelBase / 2, kTrackWidth / 2)); //Right back
+                new SwerveDriveKinematics(
+                        new Translation2d(kWheelBase / 2, kTrackWidth / 2), //Left front
+                        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), //Right front
+                        new Translation2d(-kWheelBase / 2, kTrackWidth / 2), //Left back
+                        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)); //Right back
     }
     public static class ElevatorConstants {
         public static final int ELEVATOR_MOTOR = 40; // CAN ID

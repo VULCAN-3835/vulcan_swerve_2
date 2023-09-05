@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /** Add your docs here. */
 public class OI {
     private static XboxController xboxController = new XboxController(Constants.OIConstants.BUTTON_XBOX_CONTROLLER_PORT); // Creates the button xbox controller
-    
+
     // Returns if X button is pressed in button controller
     public static boolean getXButtonPressed() {
         return xboxController.getXButtonPressed();
@@ -48,12 +48,10 @@ public class OI {
     }
     // Returns the value of the left joystick X axis in button controller
     public static double getLeftJoystickX() {
-        SmartDashboard.putNumber("LeftXJoystick", xboxController.getLeftX());
         return Math.abs(xboxController.getLeftX())> Constants.OIConstants.DEADZONE_JOYSTICK ? xboxController.getLeftX():0;
     }
     // Returns the value of the left joystick Y axis in button controller
     public static double getLeftJoystickY(){
-        SmartDashboard.putNumber("LeftYJoystick", xboxController.getLeftY());
         return Math.abs(xboxController.getLeftY())> Constants.OIConstants.DEADZONE_JOYSTICK ?-xboxController.getLeftY():0;
     }
     // Gets the value of the right joystick X axis in button controller
@@ -63,6 +61,15 @@ public class OI {
     // Gets the value of the right joystick Y axis in button controller
     public static double getRightJoystickY(){
         return Math.abs(xboxController.getRightY())> Constants.OIConstants.DEADZONE_JOYSTICK ?-xboxController.getRightY():0;
-        
+    }
+
+    public static double driveY() {
+        return -getRightJoystickX();
+    }
+    public static double driveX() {
+        return getRightJoystickY();
+    }
+    public static double driveRot() {
+        return -getLeftJoystickX();
     }
 }

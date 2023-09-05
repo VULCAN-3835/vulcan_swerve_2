@@ -24,7 +24,7 @@ public class TeleopDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.swerveDrive.drive(OI.getRightJoystickX(),OI.getRightJoystickY(),OI.getLeftJoystickX(),false);
+    this.swerveDrive.drive(OI.driveX(),OI.driveY(),OI.driveRot(),false);
   }
 
   // Called once the command ends or is interrupted.

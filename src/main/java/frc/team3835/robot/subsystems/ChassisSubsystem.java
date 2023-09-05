@@ -9,9 +9,12 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.Constants.SwerveConstants;
+import frc.team3835.robot.commands.TeleopDriveCommand;
+import frc.team3835.robot.OI;
 import frc.team3835.robot.commands.TeleopDriveCommand;
 
 public class ChassisSubsystem extends SubsystemBase { 
@@ -40,16 +43,16 @@ public class ChassisSubsystem extends SubsystemBase {
             Constants.ChassisConstants.RIGHT_FRONT_INVERTED);
 
     this.swerve_modules[wheels.left_back.ordinal()] = new SwerveModule(Constants.ChassisConstants.LEFT_BACK_DRIVE, // Instancing Left Back Wheel
-    Constants.ChassisConstants.LEFT_BACK_STEER, 
-    Constants.ChassisConstants.LEFT_BACK_ENC, 
-    Constants.ChassisConstants.LEFT_BACK_ZERO, 
-    Constants.ChassisConstants.LEFT_BACK_INVERTED);
+            Constants.ChassisConstants.LEFT_BACK_STEER,
+            Constants.ChassisConstants.LEFT_BACK_ENC,
+            Constants.ChassisConstants.LEFT_BACK_ZERO,
+            Constants.ChassisConstants.LEFT_BACK_INVERTED);
 
     this.swerve_modules[wheels.right_back.ordinal()] = new SwerveModule(Constants.ChassisConstants.RIGHT_BACK_DRIVE, // Instancing Right Back Wheel
-    Constants.ChassisConstants.RIGHT_BACK_STEER, 
-    Constants.ChassisConstants.RIGHT_BACK_ENC, 
-    Constants.ChassisConstants.RIGHT_BACK_ZERO, 
-    Constants.ChassisConstants.RIGHT_BACK_INVERTED);
+            Constants.ChassisConstants.RIGHT_BACK_STEER,
+            Constants.ChassisConstants.RIGHT_BACK_ENC,
+            Constants.ChassisConstants.RIGHT_BACK_ZERO,
+            Constants.ChassisConstants.RIGHT_BACK_INVERTED);
 
     setDefaultCommand(new TeleopDriveCommand(this));
   }
@@ -117,6 +120,20 @@ public class ChassisSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+      SmartDashboard.putNumber("Left Front",this.swerve_modules[wheels.left_front.ordinal()].GetTrueAngle());
+      SmartDashboard.putNumber("Left Back",this.swerve_modules[wheels.left_back.ordinal()].GetTrueAngle());
+      SmartDashboard.putNumber("Right Front",this.swerve_modules[wheels.right_front.ordinal()].GetTrueAngle());
+      SmartDashboard.putNumber("Right Back",this.swerve_modules[wheels.right_back.ordinal()].GetTrueAngle());
+
+
+      SmartDashboard.putNumber("Left Joystick X", OI.getLeftJoystickX());
+      SmartDashboard.putNumber("Left Joystick Y", OI.getLeftJoystickY());
+      SmartDashboard.putNumber("Right Joystick X", OI.getRightJoystickX());
+      SmartDashboard.putNumber("Right Joystick Y", OI.getRightJoystickY());
+
+      SmartDashboard.putNumber("Left Front Velocity",this.swerve_modules[wheels.left_front.ordinal()].GetVel());
+      SmartDashboard.putNumber("Left Back Velocity",this.swerve_modules[wheels.left_back.ordinal()].GetVel());
+      SmartDashboard.putNumber("Right Front Velocity",this.swerve_modules[wheels.right_front.ordinal()].GetVel());
+      SmartDashboard.putNumber("Right Back Velocity",this.swerve_modules[wheels.right_back.ordinal()].GetVel());
   }
 }
