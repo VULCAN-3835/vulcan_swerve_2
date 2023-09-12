@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -18,6 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.util.Conversions;
 import jdk.incubator.vector.VectorOperators;
+import frc.team3835.robot.util.Conversions;
+
 
 /** Add your docs here. */
 public class SwerveModule {
@@ -112,7 +115,7 @@ public class SwerveModule {
         falconPosition = this.steerMotor.getSelectedSensorPosition(); // Finds current position of falcon sensor
         
         if (driveOutput != 0 || positionError != 0) {
-            this.steerMotor.set(TalonFXControlMode.Position, // Sets the steer motor using the position control mode
+            this.steerMotor.set(TalonFXControlMode.Position,
             positionErrorTicks+falconPosition,
             DemandType.ArbitraryFeedForward,
             Constants.SwerveConstants.steerMotorThreshold*Math.signum(positionErrorDeadzone));
@@ -136,6 +139,5 @@ public class SwerveModule {
     public double GetVel() {
         return this.driveMotor.getSelectedSensorVelocity();
     }
-
 
 }
