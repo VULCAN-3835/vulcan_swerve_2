@@ -5,7 +5,7 @@
 
 package frc.team3835.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
@@ -51,6 +51,13 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An example command will be run in autonomous
-        return null;
+
+        return new ParallelRaceGroup(
+                new WaitCommand(3),
+                new StartEndCommand(
+                        () -> this.chassisSubsystem.drive(0.5,0,0,false),
+                        () -> this.chassisSubsystem.drive(0,0,0,false),
+                        this.chassisSubsystem)
+        );
     }
 }

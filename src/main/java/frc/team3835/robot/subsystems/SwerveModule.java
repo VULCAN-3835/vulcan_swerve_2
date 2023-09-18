@@ -13,12 +13,11 @@ import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3835.robot.Constants;
-import frc.team3835.robot.util.Conversions;
-import jdk.incubator.vector.VectorOperators;
 import frc.team3835.robot.util.Conversions;
 
 
@@ -31,8 +30,8 @@ public class SwerveModule {
     private CANCoder absEncoder; // Absolute encoder responsible for keeping track of module position
 
     // States
-    private SwerveModuleState target; // The desired target of the module
-    private SwerveModuleState state; // The current state of the module
+    private SwerveModuleState target = new SwerveModuleState(); // The desired target of the module
+    private SwerveModuleState state = new SwerveModuleState(); // The current state of the module
 
     private double trueZero; // The offset for the wheel position
     private double driveOutput; // The output given to wheels
@@ -121,11 +120,15 @@ public class SwerveModule {
             Constants.SwerveConstants.steerMotorThreshold*Math.signum(positionErrorDeadzone));
         }
 
-        this.driveOutput = this.state.speedMetersPerSecond; // Output for drive motor
-        this.driveMotor.set(TalonFXControlMode.PercentOutput, driveOutput*0.4);
+//        this.driveOutput = this.state.speedMetersPerSecond*0.4; // Output for drive motor
+//        this.driveMotor.set(TalonFXControlMode.PercentOutput, this.driveOutput);
 
-        this.driveOutput = Conversions.MPSToFalcon(this.state.speedMetersPerSecond, Units.inchesToMeters(2), 6.75);
-//        this.driveMotor.set(TalonFXControlMode.Velocity, driveOutput, DemandType.ArbitraryFeedForward, ff.calculate(driveOutput));
+
+        this.driveOutput = this.state.speedMetersPerSecond;
+        this.driveMotor.set(TalonFXControlMode.Velocity,
+                Conversions.MPSToFalcon(this.driveOutput, Units.inchesToMeters(4*Math.PI), 6.75),
+                DemandType.ArbitraryFeedForward,
+                this.feedforward.calculate(driveOutput));
     }
     /**
      * Finds the true angle of the motor
@@ -136,8 +139,21 @@ public class SwerveModule {
         return this.absEncoder.getAbsolutePosition();
 
     }
+    public double GetTargetError() {
+        return this.state.angle.minus(Rotation2d.fromDegrees(GetTrueAngle())).getDegrees();
+    }
+    public SwerveModulePosition GetModulePosition() {
+        return new SwerveModulePosition(GetDistanceMeters(), Rotation2d.fromDegrees(GetTrueAngle()));
+    }
     public double GetVel() {
         return this.driveMotor.getSelectedSensorVelocity();
+    }
+
+    public double GetDistanceMeters() {
+        return Conversions.falconToMeters(GetDistance(), Units.inchesToMeters(4*Math.PI), 6.75);
+    }
+    public double GetDistance() {
+        return this.driveMotor.getSelectedSensorPosition();
     }
 
 }
