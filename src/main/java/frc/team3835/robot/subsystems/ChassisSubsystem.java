@@ -190,6 +190,8 @@ public class ChassisSubsystem extends SubsystemBase {
 
       SmartDashboard.putData(field);
 
+      SmartDashboard.putNumber("Gyro Yaw", this.imu.getAngle());
+
       SmartDashboard.putNumber("Left Front Distance Meters",this.swerve_modules[wheels.left_front.ordinal()].GetDistanceMeters());
       SmartDashboard.putNumber("Left Back Distance Meters",this.swerve_modules[wheels.left_back.ordinal()].GetDistanceMeters());
       SmartDashboard.putNumber("Right Front Distance Meters",this.swerve_modules[wheels.right_front.ordinal()].GetDistanceMeters());
@@ -214,12 +216,11 @@ public class ChassisSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Left Back Velocity",this.swerve_modules[wheels.left_back.ordinal()].GetVel());
       SmartDashboard.putNumber("Right Front Velocity",this.swerve_modules[wheels.right_front.ordinal()].GetVel());
       SmartDashboard.putNumber("Right Back Velocity",this.swerve_modules[wheels.right_back.ordinal()].GetVel());
-
       SmartDashboard.putNumber("Velocity Average", Conversions.falconToMPS(
-              (this.swerve_modules[wheels.left_front.ordinal()].GetVel()+
-              this.swerve_modules[wheels.left_back.ordinal()].GetVel()+
-              this.swerve_modules[wheels.right_front.ordinal()].GetVel()+
-              this.swerve_modules[wheels.right_back.ordinal()].GetVel())/4,
+              (Math.abs(this.swerve_modules[wheels.left_front.ordinal()].GetVel())+
+              Math.abs(this.swerve_modules[wheels.left_back.ordinal()].GetVel())+
+              Math.abs(this.swerve_modules[wheels.right_front.ordinal()].GetVel())+
+              Math.abs(this.swerve_modules[wheels.right_back.ordinal()].GetVel()))/4,
               Units.inchesToMeters(4*Math.PI),
               6.75
               ));

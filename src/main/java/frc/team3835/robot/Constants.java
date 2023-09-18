@@ -31,7 +31,7 @@ public final class Constants
         public static final double steerI = 0;
         public static final double steerD = 0;
 
-        public static final double driveP = 0; // TODO: Find appropriate pid values, (Previous: 0.14)
+        public static final double driveP = 0.02; // TODO: Find appropriate pid values, (Previous: 0.14)
         public static final double driveI = 0;
         public static final double driveD = 0;
 
