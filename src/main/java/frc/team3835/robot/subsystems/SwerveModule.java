@@ -120,15 +120,15 @@ public class SwerveModule {
             Constants.SwerveConstants.steerMotorThreshold*Math.signum(positionErrorDeadzone));
         }
 
-//        this.driveOutput = this.state.speedMetersPerSecond*0.4; // Output for drive motor
-//        this.driveMotor.set(TalonFXControlMode.PercentOutput, this.driveOutput);
+        this.driveOutput = this.state.speedMetersPerSecond*0.4; // Output for drive motor
+        this.driveMotor.set(TalonFXControlMode.PercentOutput, this.driveOutput);
 
 
-        this.driveOutput = this.state.speedMetersPerSecond;
-        this.driveMotor.set(TalonFXControlMode.Velocity,
-                Conversions.MPSToFalcon(this.driveOutput, Units.inchesToMeters(4*Math.PI), 6.75),
-                DemandType.ArbitraryFeedForward,
-                this.feedforward.calculate(driveOutput));
+//        this.driveOutput = this.state.speedMetersPerSecond;
+//        this.driveMotor.set(TalonFXControlMode.Velocity,
+//                Conversions.MPSToFalcon(this.driveOutput, Units.inchesToMeters(4*Math.PI), 6.75),
+//                DemandType.ArbitraryFeedForward,
+//                this.feedforward.calculate(driveOutput));
     }
     /**
      * Finds the true angle of the motor

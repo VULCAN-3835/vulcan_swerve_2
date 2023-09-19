@@ -44,7 +44,8 @@ public class ChassisSubsystem extends SubsystemBase {
 
   private SwerveModulePosition[] swerve_module_positions = new SwerveModulePosition[4];
 
-  public ChassisSubsystem() { 
+  public ChassisSubsystem() {
+
     this.swerve_modules[wheels.left_front.ordinal()] = new SwerveModule(Constants.ChassisConstants.LEFT_FRONT_DRIVE, // Instancing Left Front Wheel
             Constants.ChassisConstants.LEFT_FRONT_STEER,
             Constants.ChassisConstants.LEFT_FRONT_ENC,
