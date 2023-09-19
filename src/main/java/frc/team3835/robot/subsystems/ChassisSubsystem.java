@@ -111,7 +111,7 @@ public class ChassisSubsystem extends SubsystemBase {
     var swerveModuleStates =
     Constants.ChassisConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rot, this.imu.getRotation2d().unaryMinus())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rot, this.imu.getRotation2d())
                 : new ChassisSpeeds(xVelocity, yVelocity, rot));
     setModuleStates(swerveModuleStates);
   }
