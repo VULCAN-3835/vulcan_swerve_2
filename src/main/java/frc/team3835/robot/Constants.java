@@ -31,12 +31,12 @@ public final class Constants
         public static final double steerI = 0;
         public static final double steerD = 0;
 
-        public static final double driveP = 0; // TODO: Find appropriate pid values, (Previous: 0.14)
+        public static final double driveP = 0; // 0.02
         public static final double driveI = 0;
         public static final double driveD = 0;
 
-        public static final double feedForwardKs = 0; // TODO: Find appropriate feedforward values
-        public static final double feedForwardKv = 0;
+        public static final double feedForwardKs = 0.4704 / 12;
+        public static final double feedForwardKv = 2.3615 / 12;
 
         public static final double maxAcceleration = 1.5;
 
@@ -45,27 +45,27 @@ public final class Constants
     public static class ChassisConstants {
         public static final int LEFT_FRONT_DRIVE = 12; // CAN ID
         public static final int RIGHT_FRONT_DRIVE = 10; // CAN ID
-        public static final int LEFT_BACK_DRIVE = 11; // CAN ID
-        public static final int RIGHT_BACK_DRIVE = 13; // CAN ID
+        public static final int LEFT_BACK_DRIVE = 13; // CAN ID
+        public static final int RIGHT_BACK_DRIVE = 11; // CAN ID
         // Ports for angle motors
         public static final int LEFT_FRONT_STEER = 22; // CAN ID
         public static final int RIGHT_FRONT_STEER = 20; // CAN ID
-        public static final int LEFT_BACK_STEER = 21; // CAN ID
-        public static final int RIGHT_BACK_STEER = 23; // CAN ID
+        public static final int LEFT_BACK_STEER = 23; // CAN ID
+        public static final int RIGHT_BACK_STEER = 21; // CAN ID
         // Ports for encoders
         public static final int LEFT_FRONT_ENC = 32; // CAN ID
         public static final int RIGHT_FRONT_ENC = 30; // CAN ID
-        public static final int LEFT_BACK_ENC = 31; // CAN ID
-        public static final int RIGHT_BACK_ENC = 33; // CAN ID
+        public static final int LEFT_BACK_ENC = 33; // CAN ID
+        public static final int RIGHT_BACK_ENC = 31; // CAN ID
         // Offsets for absolute encoders:
-        public static final double LEFT_FRONT_ZERO = -177.1875;
-        public static final double RIGHT_FRONT_ZERO = -62.66;
-        public static final double LEFT_BACK_ZERO = 169.36;
-        public static final double RIGHT_BACK_ZERO =  -34.8;
+        public static final double LEFT_FRONT_ZERO = 5.71;
+        public static final double RIGHT_FRONT_ZERO = -63.63;
+        public static final double LEFT_BACK_ZERO = -127.08;
+        public static final double RIGHT_BACK_ZERO =  76.9;
         // Which motors are inverted                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        public static final boolean frontLeftDriveInverted = true;
-        public static final boolean LEFT_FRONT_INVERTED = true;
+        public static final boolean LEFT_FRONT_INVERTED = false;
         public static final boolean RIGHT_FRONT_INVERTED = false;
-        public static final boolean LEFT_BACK_INVERTED = true;
+        public static final boolean LEFT_BACK_INVERTED = false;
         public static final boolean RIGHT_BACK_INVERTED = false;
 
         // Max speed in meters per second
