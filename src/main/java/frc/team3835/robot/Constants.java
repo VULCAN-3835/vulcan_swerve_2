@@ -20,6 +20,8 @@ public final class Constants
 {
     public static class OIConstants {
         public static final int BUTTON_XBOX_CONTROLLER_PORT = 0;
+        public static final int ELEVATOR_XBOX_CONTROLLER_PORT = 1;
+
         public static final double DEADZONE_JOYSTICK = 0.1;
     }
     public static class SwerveConstants
@@ -85,5 +87,7 @@ public final class Constants
     }
     public static class ElevatorConstants {
         public static final int ELEVATOR_MOTOR = 40; // CAN ID
+        public static final int HAND_MOTOR = 41;
+        public static final int INTAKE_MOTOR = 42;
     }
 }

@@ -52,7 +52,6 @@ public class ChassisSubsystem extends SubsystemBase {
             Constants.ChassisConstants.LEFT_FRONT_ENC,
             Constants.ChassisConstants.LEFT_FRONT_ZERO,
             Constants.ChassisConstants.LEFT_FRONT_INVERTED);
-
     this.swerve_modules[wheels.right_front.ordinal()] = new SwerveModule(Constants.ChassisConstants.RIGHT_FRONT_DRIVE, // Instancing Right Front Wheel
             Constants.ChassisConstants.RIGHT_FRONT_STEER, 
             Constants.ChassisConstants.RIGHT_FRONT_ENC, 

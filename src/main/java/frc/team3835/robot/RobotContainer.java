@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
+import frc.team3835.robot.subsystems.ElevatorSubsystem;
+
+import javax.xml.stream.events.EndElement;
 
 
 /**
@@ -20,7 +23,8 @@ import frc.team3835.robot.subsystems.ChassisSubsystem;
 public class RobotContainer
 {
     
-    private ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
+//    private ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
+    private ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     public RobotContainer()
     {
         // Configure the trigger bindings
@@ -52,12 +56,13 @@ public class RobotContainer
     {
         // An example command will be run in autonomous
 
-        return new ParallelRaceGroup(
-                new WaitCommand(3),
-                new StartEndCommand(
-                        () -> this.chassisSubsystem.drive(0.5,0,0,false),
-                        () -> this.chassisSubsystem.drive(0,0,0,false),
-                        this.chassisSubsystem)
-        );
+        return null;
+//        return new ParallelRaceGroup(
+//                new WaitCommand(3),
+//                new StartEndCommand(
+//                        () -> this.chassisSubsystem.drive(0.5,0,0,false),
+//                        () -> this.chassisSubsystem.drive(0,0,0,false),
+//                        this.chassisSubsystem)
+//        );
     }
 }

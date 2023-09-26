@@ -5,12 +5,14 @@
 package frc.team3835.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team3835.robot.Constants.ElevatorConstants;
+import frc.team3835.robot.commands.ElevatorDeafultCommand;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX elevatorMotor;
@@ -25,18 +27,22 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   
   public ElevatorSubsystem() {
-    elevatorMotor = new TalonFX(ElevatorConstants.ELEVATOR_MOTOR);
+    this.elevatorMotor = new TalonFX(ElevatorConstants.ELEVATOR_MOTOR);
 
-    elevatorMotor.configFactoryDefault();
-    elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, PID_SLOT, TIMEOUT_MS);
+    this.elevatorMotor.setNeutralMode(NeutralMode.Brake);
 
-    elevatorMotor.configMotionCruiseVelocity((int) maxVelocity);
-    elevatorMotor.configMotionAcceleration((int) maxAcceleration);
+    this.elevatorMotor.configFactoryDefault();
+    this.elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, PID_SLOT, TIMEOUT_MS);
 
-    elevatorMotor.config_kP(PID_SLOT, 0); // TODO: Find pid values
-    elevatorMotor.config_kI(PID_SLOT, 0);
-    elevatorMotor.config_kD(PID_SLOT, 0);
-    elevatorMotor.config_kF(PID_SLOT, 0);
+    this.elevatorMotor.configMotionCruiseVelocity((int) maxVelocity);
+    this.elevatorMotor.configMotionAcceleration((int) maxAcceleration);
+
+    this.elevatorMotor.config_kP(PID_SLOT, 0); // TODO: Find pid values
+    this.elevatorMotor.config_kI(PID_SLOT, 0);
+    this.elevatorMotor.config_kD(PID_SLOT, 0);
+    this.elevatorMotor.config_kF(PID_SLOT, 0);
+
+    setDefaultCommand(new ElevatorDeafultCommand(this));
   }
 
   public void setArmPosition(double position) {
@@ -44,6 +50,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
   public void setPower(double power) {
     this.elevatorMotor.set(TalonFXControlMode.PercentOutput, power);
+  }
+  public void setIntakePower(double power) {
+
   }
   public void zeroMotors() {
     this.elevatorMotor.set(TalonFXControlMode.PercentOutput, 0);

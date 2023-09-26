@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /** Add your docs here. */
 public class OI {
     private static XboxController xboxController = new XboxController(Constants.OIConstants.BUTTON_XBOX_CONTROLLER_PORT); // Creates the button xbox controller
+    private static XboxController elevatorXboxController = new XboxController(Constants.OIConstants.ELEVATOR_XBOX_CONTROLLER_PORT); // Creates the button xbox controller
 
     // Returns if X button is pressed in button controller
     public static boolean getXButtonPressed() {
@@ -61,6 +62,13 @@ public class OI {
     // Gets the value of the right joystick Y axis in button controller
     public static double getRightJoystickY(){
         return Math.abs(xboxController.getRightY())> Constants.OIConstants.DEADZONE_JOYSTICK ?-xboxController.getRightY():0;
+    }
+    public static double getRightTrigger() {
+        return Math.abs(xboxController.getRightTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getRightTriggerAxis():0;
+    }
+
+    public static double getLeftTrigger() {
+        return Math.abs(xboxController.getLeftTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getLeftTriggerAxis():0;
     }
 
     public static double driveY() {
