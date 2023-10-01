@@ -5,6 +5,7 @@
 
 package frc.team3835.robot;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
@@ -26,14 +27,11 @@ public final class Constants
     }
     public static class SwerveConstants
     {
-        public static final double pulseToMeterFalcon = 43310.195537448053576162384741371; // TODO: Fact check
-        public static final double ticksPerDegree = 70.9; // TODO: Fact Check
-
-        public static final double steerP = 0.1; // TODO: Find appropriate pid values, (Previous: 0.125)
+        public static final double steerP = 0.09; // TODO: Find appropriate pid values, (Previous: 0.125)
         public static final double steerI = 0;
         public static final double steerD = 0;
 
-        public static final double driveP = 0; // 0.02
+        public static final double driveP = 0.02; // 0.02
         public static final double driveI = 0;
         public static final double driveD = 0;
 
@@ -43,6 +41,30 @@ public final class Constants
         public static final double maxAcceleration = 1.5;
 
         public static final double steerMotorThreshold = 0.04; // TODO: Check minimul power required to move motor
+
+        public static final int angleContinuousCurrentLimit = 25;
+        public static final int anglePeakCurrentLimit = 40;
+        public static final double anglePeakCurrentDuration = 0.1;
+        public static final boolean angleEnableCurrentLimit = true;
+
+        public static final int driveContinuousCurrentLimit = 35;
+        public static final int drivePeakCurrentLimit = 60;
+        public static final double drivePeakCurrentDuration = 0.1;
+        public static final boolean driveEnableCurrentLimit = true;
+
+        public static final SupplyCurrentLimitConfiguration angleSupplyLimit = new SupplyCurrentLimitConfiguration(
+                Constants.SwerveConstants.angleEnableCurrentLimit,
+                Constants.SwerveConstants.angleContinuousCurrentLimit,
+                Constants.SwerveConstants.anglePeakCurrentLimit,
+                Constants.SwerveConstants.anglePeakCurrentDuration);
+
+        public static final SupplyCurrentLimitConfiguration driveSupplyLimit = new SupplyCurrentLimitConfiguration(
+                Constants.SwerveConstants.driveEnableCurrentLimit,
+                Constants.SwerveConstants.driveContinuousCurrentLimit,
+                Constants.SwerveConstants.drivePeakCurrentLimit,
+                Constants.SwerveConstants.drivePeakCurrentDuration);
+
+
     }
     public static class ChassisConstants {
         public static final int LEFT_FRONT_DRIVE = 12; // CAN ID
@@ -60,10 +82,10 @@ public final class Constants
         public static final int LEFT_BACK_ENC = 33; // CAN ID
         public static final int RIGHT_BACK_ENC = 31; // CAN ID
         // Offsets for absolute encoders:
-        public static final double LEFT_FRONT_ZERO = 5.71;
-        public static final double RIGHT_FRONT_ZERO = -63.63;
-        public static final double LEFT_BACK_ZERO = -127.08;
-        public static final double RIGHT_BACK_ZERO =  76.9;
+        public static final double LEFT_FRONT_ZERO = 7.55859375; //5.71
+        public static final double RIGHT_FRONT_ZERO = -67.32421875; //-63.63
+        public static final double LEFT_BACK_ZERO = -125.947265625; //-127.08
+        public static final double RIGHT_BACK_ZERO =  77.51953125; //76.9
         // Which motors are inverted                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        public static final boolean frontLeftDriveInverted = true;
         public static final boolean LEFT_FRONT_INVERTED = false;
         public static final boolean RIGHT_FRONT_INVERTED = false;
@@ -87,7 +109,15 @@ public final class Constants
     }
     public static class ElevatorConstants {
         public static final int ELEVATOR_MOTOR = 40; // CAN ID
-        public static final int HAND_MOTOR = 41;
+        public static final int AXIS_MOTOR = 41;
         public static final int INTAKE_MOTOR = 42;
+
+        public static final boolean ELEVATOR_INVERTED = true;
+        public static final boolean AXIS_INVERTED = false;
+        public static final boolean INTAKE_INVERTED = false;
+
+
+        public static final int LIMIT_SWITCH = 0;
+        public static final int ABS_ENCODER = 2;
     }
 }

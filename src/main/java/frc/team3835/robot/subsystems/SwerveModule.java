@@ -30,8 +30,8 @@ public class SwerveModule {
     private CANCoder absEncoder; // Absolute encoder responsible for keeping track of module position
 
     // States
-    private SwerveModuleState target; // The desired target of the module
-    private SwerveModuleState state; // The current state of the module
+    private SwerveModuleState target = new SwerveModuleState(); // The desired target of the module
+    private SwerveModuleState state = new SwerveModuleState(); // The current state of the module
 
     private double trueZero; // The offset for the wheel position
     private double driveOutput; // The output given to wheels
@@ -54,9 +54,6 @@ public class SwerveModule {
         this.driveMotor.config_kI(0, Constants.SwerveConstants.driveI);
         this.driveMotor.config_kD(0, Constants.SwerveConstants.driveD);
 
-        driveMotor.configMotionAcceleration //Max Acceleration(m/s^2) in Pulses per 100ms
-        ((Constants.SwerveConstants.maxAcceleration*Constants.SwerveConstants.pulseToMeterFalcon)/10);
-
         this.steerMotor.config_kP(0, Constants.SwerveConstants.steerP);
         this.steerMotor.config_kI(0, Constants.SwerveConstants.steerI);
         this.steerMotor.config_kD(0, Constants.SwerveConstants.steerD);
@@ -69,9 +66,15 @@ public class SwerveModule {
         this.absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180); // -180 to 180
         this.absEncoder.configMagnetOffset(this.trueZero);
 
+        this.driveMotor.configClosedloopRamp(0.4);
+        this.driveMotor.configSupplyCurrentLimit(Constants.SwerveConstants.driveSupplyLimit);
+
+        this.steerMotor.configSupplyCurrentLimit(Constants.SwerveConstants.angleSupplyLimit);
+
         // Feedforward setup
         this.feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.feedForwardKs, Constants.SwerveConstants.feedForwardKv);
 
+        this.state = new SwerveModuleState();
     }
 
     /*
@@ -94,6 +97,7 @@ public class SwerveModule {
         set(this.target);
     }
 
+
     /**
      * Sets the module's state to given one
      *
@@ -109,8 +113,8 @@ public class SwerveModule {
         double falconPosition; // The current position of the falcon encoder
 
         positionError = this.state.angle.minus(Rotation2d.fromDegrees(GetTrueAngle())).getDegrees(); // Calculates the error between current state and desired one
-        positionErrorTicks = positionError * Constants.SwerveConstants.ticksPerDegree; // Transfers error into falcon ticks
-        positionErrorDeadzone = Math.abs(positionError) > 1 ? positionError : 0; // Checks if value is within deadzone threshhold
+        positionErrorTicks = Conversions.degreesToFalcon(positionError, 12.8 / 1.0); // Transfers error into falcon ticks
+        positionErrorDeadzone = Math.abs(positionError) > 0.3 ? positionError : 0; // Checks if value is within deadzone threshhold
         falconPosition = this.steerMotor.getSelectedSensorPosition(); // Finds current position of falcon sensor
         
         if (driveOutput != 0 || positionError != 0) {
@@ -120,15 +124,16 @@ public class SwerveModule {
             Constants.SwerveConstants.steerMotorThreshold*Math.signum(positionErrorDeadzone));
         }
 
-        this.driveOutput = this.state.speedMetersPerSecond; // Output for drive motor
-        this.driveMotor.set(TalonFXControlMode.PercentOutput, driveOutput*0.4);
+
+//        this.driveOutput = this.state.speedMetersPerSecond; // Output for drive motor
+//        this.driveMotor.set(TalonFXControlMode.PercentOutput, driveOutput*0.2);
 
 
-//        this.driveOutput = this.state.speedMetersPerSecond;
-//        this.driveMotor.set(TalonFXControlMode.Velocity,
-//                Conversions.MPSToFalcon(this.driveOutput, Units.inchesToMeters(4*Math.PI), 6.75),
-//                DemandType.ArbitraryFeedForward,
-//                this.feedforward.calculate(driveOutput));
+        this.driveOutput = this.state.speedMetersPerSecond*1.8;
+        this.driveMotor.set(TalonFXControlMode.Velocity,
+                Conversions.MPSToFalcon(this.driveOutput, Units.inchesToMeters(4*Math.PI), 6.75),
+                DemandType.ArbitraryFeedForward,
+                this.feedforward.calculate(driveOutput));
     }
     /**
      * Finds the true angle of the motor
@@ -155,5 +160,6 @@ public class SwerveModule {
     public double GetDistance() {
         return this.driveMotor.getSelectedSensorPosition();
     }
+
 
 }

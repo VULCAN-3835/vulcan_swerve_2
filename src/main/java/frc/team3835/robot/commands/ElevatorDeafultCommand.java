@@ -22,7 +22,7 @@ public class ElevatorDeafultCommand extends CommandBase {
 
     @Override
     public void execute() {
-        this.elevatorSubsystem.setPower((OI.getRightTrigger()-OI.getLeftTrigger())*0.4);
+         this.elevatorSubsystem.setPower((OI.getRightTrigger()-OI.getLeftTrigger())*0.6);
     }
 
     @Override

@@ -8,15 +8,25 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.revrobotics.SparkMaxAnalogSensor;
+import edu.wpi.first.hal.simulation.AnalogInDataJNI;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team3835.robot.Constants.ElevatorConstants;
 import frc.team3835.robot.commands.ElevatorDeafultCommand;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 public class ElevatorSubsystem extends SubsystemBase {
+  private DutyCycleEncoder absAxisEncoder;
   private TalonFX elevatorMotor;
-
+  private CANSparkMax axisMotor;
+  private CANSparkMax intakeMotor;
   private DigitalInput limitSwitch;
 
   private final int PID_SLOT = 0;
@@ -28,19 +38,21 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   public ElevatorSubsystem() {
     this.elevatorMotor = new TalonFX(ElevatorConstants.ELEVATOR_MOTOR);
+    this.axisMotor = new CANSparkMax(ElevatorConstants.AXIS_MOTOR, MotorType.kBrushed);
+    this.intakeMotor = new CANSparkMax(ElevatorConstants.INTAKE_MOTOR, MotorType.kBrushed);
+
+    this.elevatorMotor.setInverted(ElevatorConstants.ELEVATOR_INVERTED);
+    this.axisMotor.setInverted(ElevatorConstants.AXIS_INVERTED);
+    this.intakeMotor.setInverted(ElevatorConstants.INTAKE_INVERTED);
 
     this.elevatorMotor.setNeutralMode(NeutralMode.Brake);
+    this.axisMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    this.intakeMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     this.elevatorMotor.configFactoryDefault();
-    this.elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, PID_SLOT, TIMEOUT_MS);
 
-    this.elevatorMotor.configMotionCruiseVelocity((int) maxVelocity);
-    this.elevatorMotor.configMotionAcceleration((int) maxAcceleration);
-
-    this.elevatorMotor.config_kP(PID_SLOT, 0); // TODO: Find pid values
-    this.elevatorMotor.config_kI(PID_SLOT, 0);
-    this.elevatorMotor.config_kD(PID_SLOT, 0);
-    this.elevatorMotor.config_kF(PID_SLOT, 0);
+    this.limitSwitch = new DigitalInput(ElevatorConstants.LIMIT_SWITCH);
+    this.absAxisEncoder = new DutyCycleEncoder(ElevatorConstants.ABS_ENCODER);
 
     setDefaultCommand(new ElevatorDeafultCommand(this));
   }
@@ -49,23 +61,23 @@ public class ElevatorSubsystem extends SubsystemBase {
     this.elevatorMotor.set(TalonFXControlMode.MotionMagic, position);
   }
   public void setPower(double power) {
-    this.elevatorMotor.set(TalonFXControlMode.PercentOutput, power);
+    this.elevatorMotor.set(TalonFXControlMode.PercentOutput, isElevatorDown()&&power<0?0:power);
+  }
+  public boolean isElevatorDown() {
+    return !this.limitSwitch.get();
+  }
+  public void setAxisPower(double power) {
+    this.axisMotor.set(power);
   }
   public void setIntakePower(double power) {
-
+    this.intakeMotor.set(power);
   }
   public void zeroMotors() {
     this.elevatorMotor.set(TalonFXControlMode.PercentOutput, 0);
   }
-  public double getCurrentPosition () {
-    return this.elevatorMotor.getSelectedSensorPosition();
-  }
-  public double getCurrentTargetPosition() {
-    return this.elevatorMotor.getClosedLoopTarget();
-  }
-
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Absolute Encoder",this.absAxisEncoder.getAbsolutePosition());
+    SmartDashboard.putBoolean("Limit switch Pressed", isElevatorDown());
   }
 }

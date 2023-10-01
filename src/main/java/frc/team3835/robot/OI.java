@@ -11,7 +11,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /** Add your docs here. */
 public class OI {
     private static XboxController xboxController = new XboxController(Constants.OIConstants.BUTTON_XBOX_CONTROLLER_PORT); // Creates the button xbox controller
-    private static XboxController elevatorXboxController = new XboxController(Constants.OIConstants.ELEVATOR_XBOX_CONTROLLER_PORT); // Creates the button xbox controller
+    private static Joystick rightJoystick = new Joystick(3);
+    private static Joystick leftJoystick = new Joystick(2);
+
+    public static double getRightX() {
+        return Math.abs(rightJoystick.getX())> 0.15 ?normalizeInput(rightJoystick.getX()):0;
+    }
+    public static double getRightY() {
+        return Math.abs(rightJoystick.getY())> 0.15 ?normalizeInput(rightJoystick.getY()):0;
+    }
+    public static double getLeftX() {
+        return Math.abs(leftJoystick.getX())> 0.15 ?normalizeInput(leftJoystick.getX()):0;
+    }
+    public static double getLeftY() {
+        return Math.abs(leftJoystick.getY())> 0.15 ?normalizeInput(leftJoystick.getY()):0;
+    }
 
     // Returns if X button is pressed in button controller
     public static boolean getXButtonPressed() {
@@ -49,35 +63,49 @@ public class OI {
     }
     // Returns the value of the left joystick X axis in button controller
     public static double getLeftJoystickX() {
-        return Math.abs(xboxController.getLeftX())> Constants.OIConstants.DEADZONE_JOYSTICK ? xboxController.getLeftX():0;
+        return Math.abs(xboxController.getLeftX())> Constants.OIConstants.DEADZONE_JOYSTICK ? normalizeInput(xboxController.getLeftX()):0;
     }
     // Returns the value of the left joystick Y axis in button controller
     public static double getLeftJoystickY(){
-        return Math.abs(xboxController.getLeftY())> Constants.OIConstants.DEADZONE_JOYSTICK ?-xboxController.getLeftY():0;
+        return Math.abs(xboxController.getLeftY())> Constants.OIConstants.DEADZONE_JOYSTICK ?-normalizeInput(xboxController.getLeftY()):0;
     }
     // Gets the value of the right joystick X axis in button controller
     public static double getRightJoystickX() {
-        return Math.abs(xboxController.getRightX())> Constants.OIConstants.DEADZONE_JOYSTICK ? xboxController.getRightX():0;
+         return Math.abs(xboxController.getRightX())> Constants.OIConstants.DEADZONE_JOYSTICK ? normalizeInput(xboxController.getRightX()):0;
     }
     // Gets the value of the right joystick Y axis in button controller
     public static double getRightJoystickY(){
-        return Math.abs(xboxController.getRightY())> Constants.OIConstants.DEADZONE_JOYSTICK ?-xboxController.getRightY():0;
+         return Math.abs(xboxController.getRightY())> Constants.OIConstants.DEADZONE_JOYSTICK ?-normalizeInput(xboxController.getRightX()):0;
     }
-    public static double getRightTrigger() {
-        return Math.abs(xboxController.getRightTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getRightTriggerAxis():0;
-    }
+     public static double getRightTrigger() {
+         return Math.abs(xboxController.getRightTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getRightTriggerAxis():0;
+     }
 
-    public static double getLeftTrigger() {
-        return Math.abs(xboxController.getLeftTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getLeftTriggerAxis():0;
-    }
+     public static double getLeftTrigger() {
+         return Math.abs(xboxController.getLeftTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getLeftTriggerAxis():0;
+     }
 
     public static double driveY() {
-        return -getRightJoystickX();
+        if (xboxController.isConnected()) {
+            return -getLeftJoystickX();
+        }
+        return -getRightX();
     }
+
     public static double driveX() {
-        return getRightJoystickY();
+        if (xboxController.isConnected()) {
+            return getLeftJoystickY();
+        }
+            return -getRightY();
     }
     public static double driveRot() {
-        return -getLeftJoystickX();
+        if (xboxController.isConnected()) {
+            return -getRightJoystickX();
+        }
+        return -getLeftX();
+    }
+
+    public static double normalizeInput(double input) {
+        return Math.pow(input,3)/Math.abs(input);
     }
 }

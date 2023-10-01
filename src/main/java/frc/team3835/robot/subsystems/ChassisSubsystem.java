@@ -10,6 +10,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -111,7 +112,7 @@ public class ChassisSubsystem extends SubsystemBase {
     var swerveModuleStates =
     Constants.ChassisConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rot, this.imu.getRotation2d())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rot, Rotation2d.fromDegrees(normalizeAngleDegrees(this.imu.getRotation2d().getDegrees())))
                 : new ChassisSpeeds(xVelocity, yVelocity, rot));
     setModuleStates(swerveModuleStates);
   }
@@ -180,6 +181,15 @@ public class ChassisSubsystem extends SubsystemBase {
                 )
         );
     }
+    public double normalizeAngleDegrees(double angleDegrees) {
+        while (angleDegrees > 180) {
+            angleDegrees -= 360;
+        }
+        while (angleDegrees < -180) {
+            angleDegrees += 360;
+        }
+        return angleDegrees;
+    }
 
   @Override
   public void periodic() {
@@ -192,6 +202,7 @@ public class ChassisSubsystem extends SubsystemBase {
       SmartDashboard.putData(field);
 
       SmartDashboard.putNumber("Gyro Yaw", this.imu.getAngle());
+      SmartDashboard.putNumber("GYRO", normalizeAngleDegrees(this.imu.getRotation2d().getDegrees()));
 
       SmartDashboard.putNumber("Left Front Distance Meters",this.swerve_modules[wheels.left_front.ordinal()].GetDistanceMeters());
       SmartDashboard.putNumber("Left Back Distance Meters",this.swerve_modules[wheels.left_back.ordinal()].GetDistanceMeters());
