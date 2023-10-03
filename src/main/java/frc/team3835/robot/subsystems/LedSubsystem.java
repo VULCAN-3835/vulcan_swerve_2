@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LedSubsystem extends SubsystemBase {
-    private final int PWM_PORT = 3;
+    private final int PWM_PORT = 4;
     private final Color8Bit RED = new Color8Bit(255, 0, 0);
     private final Color8Bit GREEN = new Color8Bit(0, 255, 0);
     private final Color8Bit BLUE = new Color8Bit(0, 0, 255);
