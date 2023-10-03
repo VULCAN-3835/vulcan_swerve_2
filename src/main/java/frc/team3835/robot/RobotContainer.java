@@ -8,6 +8,10 @@ package frc.team3835.robot;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.team3835.robot.commands.Autos.AutonomousConeTaxiStabilize;
+import frc.team3835.robot.commands.Autos.AutonomousCubeTaxiStabilize;
+import frc.team3835.robot.commands.Autos.AutonomousMoveOutStabilize;
+import frc.team3835.robot.commands.Autos.AutonomousMoveStabilize;
 import frc.team3835.robot.commands.StabilizeRamp;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
 import frc.team3835.robot.subsystems.ElevatorSubsystem;
@@ -33,7 +37,7 @@ public class RobotContainer
         Constants.ElevatorConstants.positionMap.put("Collect Cone", new double[] {0,28});
         Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,50});
         Constants.ElevatorConstants.positionMap.put("Score Low", new double[] {0,0});
-        Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,0});
+        Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,7});
         // Configure the trigger bindings
         configureBindings();
     }
@@ -113,13 +117,7 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An example command will be run in autonomous
-        return new SequentialCommandGroup( new ParallelRaceGroup(new WaitCommand(2.65),
-                new StartEndCommand(() -> this.chassisSubsystem.drive(-1.15  ,-0,-0, true),
-                        () -> this.chassisSubsystem.stopModules(), this.chassisSubsystem)),
-        new StabilizeRamp(chassisSubsystem),
-                new ParallelRaceGroup(new WaitCommand(0.1),
-                        new StartEndCommand(() -> this.chassisSubsystem.drive(0  ,0,0.05, true),
-                                () -> this.chassisSubsystem.stopModules(), this.chassisSubsystem)));
+        return new AutonomousCubeTaxiStabilize(this.chassisSubsystem,this.intakeSubsystem,this.elevatorSubsystem);
 //        return new ParallelRaceGroup(
 //                new WaitCommand(3),
 //                new StartEndCommand(

@@ -144,6 +144,9 @@ public class SwerveModule {
         return this.absEncoder.getAbsolutePosition();
 
     }
+    public double GetTargetAngle() {
+        return this.state.angle.getDegrees();
+    }
     public double GetTargetError() {
         return this.state.angle.minus(Rotation2d.fromDegrees(GetTrueAngle())).getDegrees();
     }

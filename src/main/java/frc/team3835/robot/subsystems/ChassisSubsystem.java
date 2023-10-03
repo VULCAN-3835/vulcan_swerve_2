@@ -36,6 +36,12 @@ public class ChassisSubsystem extends SubsystemBase {
 
   // Gyro 
   private AHRS imu;
+  private SwerveModuleState[] swerveModuleStates = new SwerveModuleState[] {
+          new SwerveModuleState(0,Rotation2d.fromDegrees(0)),
+          new SwerveModuleState(0,Rotation2d.fromDegrees(0)),
+          new SwerveModuleState(0,Rotation2d.fromDegrees(0)),
+          new SwerveModuleState(0,Rotation2d.fromDegrees(0)),
+};
 
   //
   private SwerveDriveOdometry odometry;
@@ -92,11 +98,10 @@ public class ChassisSubsystem extends SubsystemBase {
      */
   public void drive(ChassisSpeeds chassisSpeeds, boolean fieldRelative) {
     // Makes a swerve module-state array from chassisSpeeds
-    var swerveModuleStates = Constants.ChassisConstants.kDriveKinematics.toSwerveModuleStates(fieldRelative
+      this.swerveModuleStates = Constants.ChassisConstants.kDriveKinematics.toSwerveModuleStates(fieldRelative
       ?ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, this.imu.getRotation2d().unaryMinus())
       :chassisSpeeds
     );
-    setModuleStates(swerveModuleStates);
   }
 
   /**
@@ -109,12 +114,11 @@ public class ChassisSubsystem extends SubsystemBase {
      */
   public void drive(double xVelocity, double yVelocity, double rot, boolean fieldRelative) {
     // Kinematics turns the Chassis speeds to desired swerveModule states depending on if field relative or not
-    var swerveModuleStates =
+    this.swerveModuleStates =
     Constants.ChassisConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rot, Rotation2d.fromDegrees(normalizeAngleDegrees(this.imu.getRotation2d().getDegrees())))
                 : new ChassisSpeeds(xVelocity, yVelocity, rot));
-    setModuleStates(swerveModuleStates);
   }
   
 
@@ -199,6 +203,7 @@ public class ChassisSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+      setModuleStates(this.swerveModuleStates);
       updateModuePositions();
       this.odometry.update(this.imu.getRotation2d(), this.swerve_module_positions);
 
@@ -224,6 +229,11 @@ public class ChassisSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Left Back Error",this.swerve_modules[wheels.left_back.ordinal()].GetTargetError());
       SmartDashboard.putNumber("Right Front Error",this.swerve_modules[wheels.right_front.ordinal()].GetTargetError());
       SmartDashboard.putNumber("Right Back Error",this.swerve_modules[wheels.right_back.ordinal()].GetTargetError());
+
+      SmartDashboard.putNumber("Left Front Target", this.swerve_modules[wheels.left_front.ordinal()].GetTargetAngle());
+      SmartDashboard.putNumber("Right Front Target", this.swerve_modules[wheels.right_front.ordinal()].GetTargetAngle());
+      SmartDashboard.putNumber("Left Back Target", this.swerve_modules[wheels.left_back.ordinal()].GetTargetAngle());
+      SmartDashboard.putNumber("Right Back Target", this.swerve_modules[wheels.right_back.ordinal()].GetTargetAngle());
 
       SmartDashboard.putNumber("Left Joystick X", OI.getLeftJoystickX());
       SmartDashboard.putNumber("Left Joystick Y", OI.getLeftJoystickY());

@@ -6,9 +6,9 @@ import frc.team3835.robot.subsystems.ChassisSubsystem;
 
 public class StabilizeRamp extends CommandBase {
     ChassisSubsystem swerveChassisSubsystem;
-    double SPEEDFORWARD = 0.2; //0.08
-    double SPEEDBACKWARDS = -0.2; //-0.08
-    double PITCH_DEADZONE = 6; //6
+    double SPEEDFORWARD = 0.18; //0.08
+    double SPEEDBACKWARDS = -0.18; //-0.08
+    double PITCH_DEADZONE = 5; //6
     boolean stabalized = false;
     int counter;
     public StabilizeRamp(ChassisSubsystem swerveChassisSubsystem) {
@@ -33,7 +33,7 @@ public class StabilizeRamp extends CommandBase {
             swerveChassisSubsystem.drive(SPEEDFORWARD,0,0, true);
             counter = 0;
         }
-        else if (pitch < -PITCH_DEADZONE) {
+        else if (pitch < (-PITCH_DEADZONE)+1) {
             swerveChassisSubsystem.drive(SPEEDBACKWARDS,0,0, true);
             counter = 0;
         }
