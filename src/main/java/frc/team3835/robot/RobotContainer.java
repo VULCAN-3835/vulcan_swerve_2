@@ -16,6 +16,7 @@ import frc.team3835.robot.commands.StabilizeRamp;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
 import frc.team3835.robot.subsystems.ElevatorSubsystem;
 import frc.team3835.robot.subsystems.IntakeSubsystem;
+import frc.team3835.robot.subsystems.LedSubsystem;
 
 
 /**
@@ -31,6 +32,8 @@ public class RobotContainer
     private ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     private ChassisSubsystem chassisSubsystem = new ChassisSubsystem(intakeSubsystem);
 
+    LedSubsystem ledSubsystem;
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
         Constants.ElevatorConstants.positionMap.put("Default", new double[] {0,155}); // Elevator Closed, Angle Closed
@@ -38,11 +41,12 @@ public class RobotContainer
         Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,50});
         Constants.ElevatorConstants.positionMap.put("Score Low", new double[] {0,0});
         Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,7});
+        this.ledSubsystem = new LedSubsystem();
         // Configure the trigger bindings
         configureBindings();
     }
 
-    
+
     
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
