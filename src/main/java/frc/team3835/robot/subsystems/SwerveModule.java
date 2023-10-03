@@ -129,7 +129,7 @@ public class SwerveModule {
 //        this.driveMotor.set(TalonFXControlMode.PercentOutput, driveOutput*0.2);
 
 
-        this.driveOutput = this.state.speedMetersPerSecond*1.8;
+        this.driveOutput = this.state.speedMetersPerSecond;
         this.driveMotor.set(TalonFXControlMode.Velocity,
                 Conversions.MPSToFalcon(this.driveOutput, Units.inchesToMeters(4*Math.PI), 6.75),
                 DemandType.ArbitraryFeedForward,

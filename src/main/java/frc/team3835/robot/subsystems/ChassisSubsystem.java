@@ -46,7 +46,7 @@ public class ChassisSubsystem extends SubsystemBase {
 
   private SwerveModulePosition[] swerve_module_positions = new SwerveModulePosition[4];
 
-  public ChassisSubsystem() {
+  public ChassisSubsystem(IntakeSubsystem intakeSubsystem) {
 
     this.swerve_modules[wheels.left_front.ordinal()] = new SwerveModule(Constants.ChassisConstants.LEFT_FRONT_DRIVE, // Instancing Left Front Wheel
             Constants.ChassisConstants.LEFT_FRONT_STEER,
@@ -81,7 +81,7 @@ public class ChassisSubsystem extends SubsystemBase {
 
     this.robotPose = this.odometry.getPoseMeters();
 
-    setDefaultCommand(new TeleopDriveCommand(this));
+    setDefaultCommand(new TeleopDriveCommand(this, intakeSubsystem));
   }
 
  /**

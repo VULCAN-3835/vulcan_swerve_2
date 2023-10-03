@@ -18,6 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private PIDController axisPID;
     private final double MIN_AXIS_ANGLE = 2; // TODO: Find min and max angles
     private final double MAX_AXIS_ANGLE = 155;
+    private final double ANGLE_CLOSED = 140;
 
     private double intakePower;
     private double position = MAX_AXIS_ANGLE;
@@ -38,7 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         this.axisPID = new PIDController(0.005,0,0);
 
-        this.axisPID.setTolerance(2);
+        this.axisPID.setTolerance(3);
 
         setDefaultCommand(null);
     }
@@ -79,6 +80,10 @@ public class IntakeSubsystem extends SubsystemBase {
         double angle = this.absAxisEncoder.getAbsolutePosition();
         return -(angle-Constants.ElevatorConstants.ABS_ENCODER_OFFSET)*360;
     }
+
+    public boolean isClosed(){
+        return this.getAxisAngle() > ANGLE_CLOSED;
+    }
     public void periodic() {
 //        if(OI.getAButton()) {
 //            this.position = MIN_AXIS_ANGLE;
@@ -92,20 +97,23 @@ public class IntakeSubsystem extends SubsystemBase {
         this.setAxisPower(axisPower);
 
         if (OI.getLeftBumper()) {
-            this.intakeMotor.set(0.7);
+            this.intakeMotor.set(Constants.ElevatorConstants.INTAKE_POWER);
         }
         else if (OI.getRightBumper()) {
-            this.intakeMotor.set(-0.7);
+            this.intakeMotor.set(-Constants.ElevatorConstants.INTAKE_POWER);
         }
         // Intake set power
         if (isAtSetpoint() && !(OI.getRightBumper()||OI.getLeftBumper())){
             this.intakeMotor.set(this.intakePower);
+        } else if (!(OI.getRightBumper()||OI.getLeftBumper())) {
+            this.intakeMotor.set(0);
         }
 
         // Sensor Sanity Check
+        SmartDashboard.putBoolean("Is At setpoint", isAtSetpoint());
         SmartDashboard.putNumber("Absolute Encoder", getAxisAngle());
         SmartDashboard.putNumber("Absolute Position", this.absAxisEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("Setpoint", position);
+        SmartDashboard.putNumber("Setpoint Angle", position);
     }
 }
 

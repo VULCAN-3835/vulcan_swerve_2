@@ -22,19 +22,21 @@ import frc.team3835.robot.subsystems.IntakeSubsystem;
 public class RobotContainer
 {
     
-    private ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
     private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    private ChassisSubsystem chassisSubsystem = new ChassisSubsystem(intakeSubsystem);
+
     public RobotContainer()
     {
         Constants.ElevatorConstants.positionMap.put("Default", new double[] {0,155}); // Elevator Closed, Angle Closed
-        Constants.ElevatorConstants.positionMap.put("Collect Cone", new double[] {0,0});
-        Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {0,0});
+        Constants.ElevatorConstants.positionMap.put("Collect Cone", new double[] {0,28});
+        Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,50});
         Constants.ElevatorConstants.positionMap.put("Score Low", new double[] {0,0});
-        Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {0,0});
+        Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,0});
         // Configure the trigger bindings
         configureBindings();
     }
+
     
     
     /**
@@ -92,7 +94,7 @@ public class RobotContainer
         triggerXPressed.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Collect Cube")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Collect Cube")[0]);
-            this.intakeSubsystem.setIntakePower(Constants.ElevatorConstants.INTAKE_POWER);
+            this.intakeSubsystem.setIntakePower(Constants.ElevatorConstants.INTAKE_POWER*0.4);
         }));
         triggerXReleased.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);

@@ -42,6 +42,8 @@ public final class Constants
         public static final double feedForwardKs = 0.4704 / 12;
         public static final double feedForwardKv = 2.3615 / 12;
 
+        public static final double maxDrivingVelocity = 1.8;
+        public static final double maxPlacingVelocity = 0.7;
         public static final double maxAcceleration = 1.5;
 
         public static final double steerMotorThreshold = 0.04; // TODO: Check minimul power required to move motor
@@ -129,7 +131,7 @@ public final class Constants
 
         public static final double ABS_ENCODER_OFFSET = 0.88;
         public static final double AXIS_MOTOR_CAP = 0.4;
-        public static final double INTAKE_POWER = 0.7;
+        public static final double INTAKE_POWER = 0.9;
         public static final double ELEVATOR_MOTOR_CAP = 0.7;
 
 

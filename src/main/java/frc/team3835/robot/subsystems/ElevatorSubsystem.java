@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.Constants.ElevatorConstants;
-import frc.team3835.robot.OI;
-import frc.team3835.robot.commands.ElevatorDeafultCommand;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX elevatorMotor;
