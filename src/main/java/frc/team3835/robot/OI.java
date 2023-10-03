@@ -27,41 +27,7 @@ public class OI {
         return Math.abs(leftJoystick.getY())> 0.15 ?normalizeInput(leftJoystick.getY()):0;
     }
 
-    // Returns if X button is pressed in button controller
-    public static boolean getXButtonPressed() {
-        return xboxController.getXButtonPressed();
-    }
-    // Returns if A button is pressed in button controller
-    public static boolean getAButtonPressed() {
-        return xboxController.getAButtonPressed();
-    }
-    // Returns if Y button is pressed in button controller
-    public static boolean getYButtonPressed() {
-        return xboxController.getYButtonPressed();
-    }
-    // Returns if B button is pressed in button controller
-    public static boolean getButtonPressed() {
-        return xboxController.getBButtonPressed();
-    }
-    // Returns if Right Bumper is pressed in button controller
-    public static boolean getRightBumperPressed() {
-        return xboxController.getRightBumperPressed();
-    }
-    public static boolean getRightBumperReleased() {
-        return xboxController.getRightBumperReleased();
-    }
-    public static boolean getRightBumper() {return xboxController.getRightBumper();}
 
-    // Returns if Left Bumper is pressed in button controller
-    public static boolean getLeftBumperPressed(){
-        return xboxController.getLeftBumperPressed();
-    }
-    public static boolean getLeftBumper() {return xboxController.getLeftBumper();}
-
-    public static boolean getBackButton() {
-        return xboxController.getBackButton();
-    }
-    // Returns the value of the left joystick X axis in button controller
     public static double getLeftJoystickX() {
         return Math.abs(xboxController.getLeftX())> Constants.OIConstants.DEADZONE_JOYSTICK ? normalizeInput(xboxController.getLeftX()):0;
     }
@@ -80,10 +46,19 @@ public class OI {
      public static double getRightTrigger() {
          return Math.abs(xboxController.getRightTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getRightTriggerAxis():0;
      }
-
      public static double getLeftTrigger() {
          return Math.abs(xboxController.getLeftTriggerAxis()) > Constants.OIConstants.DEADZONE_JOYSTICK ?xboxController.getLeftTriggerAxis():0;
      }
+     public static boolean getLeftBumper() {
+        return xboxController.getLeftBumper();
+     }
+     public static boolean getRightBumper() {
+        return xboxController.getRightBumper();
+     }
+     public static boolean getAButton() {
+        return xboxController.getAButton();
+     }
+
 
     public static double driveY() {
         if (xboxController.isConnected()) {

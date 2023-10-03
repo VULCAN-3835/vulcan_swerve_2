@@ -117,7 +117,15 @@ public final class Constants
         public static final boolean INTAKE_INVERTED = false;
 
 
-        public static final int LIMIT_SWITCH = 0;
-        public static final int ABS_ENCODER = 2;
+        public static final int LIMIT_SWITCH_CLOSED = 0; // DIO Port
+        public static final int LIMIT_SWITCH_OPEN = 2; // DIO Port
+        public static final int ABS_ENCODER = 4; // DIO Port
+        public static final int DISTANCE_SENSOR = 0; // Analog Port
+
+        public static final double ABS_ENCODER_OFFSET = 0.88;
+        public static final double AXIS_MOTOR_CAP = 0.4;
+        public static final double ELEVATOR_MOTOR_CAP = 0.7;
+
+
     }
 }

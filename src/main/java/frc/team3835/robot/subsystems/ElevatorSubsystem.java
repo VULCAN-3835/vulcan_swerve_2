@@ -3,81 +3,103 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.team3835.robot.subsystems;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import com.revrobotics.SparkMaxAnalogSensor;
-import edu.wpi.first.hal.simulation.AnalogInDataJNI;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team3835.robot.Constants;
 import frc.team3835.robot.Constants.ElevatorConstants;
+import frc.team3835.robot.OI;
 import frc.team3835.robot.commands.ElevatorDeafultCommand;
-import edu.wpi.first.wpilibj.AnalogInput;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  private DutyCycleEncoder absAxisEncoder;
   private TalonFX elevatorMotor;
-  private CANSparkMax axisMotor;
-  private CANSparkMax intakeMotor;
-  private DigitalInput limitSwitch;
+  private DigitalInput limitSwitchClosed;
+  private DigitalInput limitSwitchOpen;
+  private AnalogInput distSensor;
+  private PIDController elevatorPID;
 
-  private final int PID_SLOT = 0;
-  private final int TIMEOUT_MS = 30;
-
-  private final double maxVelocity = 0; // TODO: Find max velocity
-  private final double maxAcceleration = 0; // Todo: Find max Acceleration
-
-  
+  private final double MAX_ELEVATOR_DIST = 27.5;
+  private final double MIN_ELEVATOR_DIST = 0;
+  private double position = MIN_ELEVATOR_DIST;
   public ElevatorSubsystem() {
     this.elevatorMotor = new TalonFX(ElevatorConstants.ELEVATOR_MOTOR);
-    this.axisMotor = new CANSparkMax(ElevatorConstants.AXIS_MOTOR, MotorType.kBrushed);
-    this.intakeMotor = new CANSparkMax(ElevatorConstants.INTAKE_MOTOR, MotorType.kBrushed);
 
     this.elevatorMotor.setInverted(ElevatorConstants.ELEVATOR_INVERTED);
-    this.axisMotor.setInverted(ElevatorConstants.AXIS_INVERTED);
-    this.intakeMotor.setInverted(ElevatorConstants.INTAKE_INVERTED);
 
     this.elevatorMotor.setNeutralMode(NeutralMode.Brake);
-    this.axisMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    this.intakeMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     this.elevatorMotor.configFactoryDefault();
 
-    this.limitSwitch = new DigitalInput(ElevatorConstants.LIMIT_SWITCH);
-    this.absAxisEncoder = new DutyCycleEncoder(ElevatorConstants.ABS_ENCODER);
+    this.limitSwitchClosed = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_CLOSED);
+    this.limitSwitchOpen = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_OPEN);
+    this.distSensor = new AnalogInput(ElevatorConstants.DISTANCE_SENSOR);
 
-    setDefaultCommand(new ElevatorDeafultCommand(this));
-  }
+    this.elevatorPID = new PIDController(0.12,0,0);
 
-  public void setArmPosition(double position) {
-    this.elevatorMotor.set(TalonFXControlMode.MotionMagic, position);
+    this.elevatorPID.setTolerance(2);
+
+    setDefaultCommand(null);
   }
-  public void setPower(double power) {
-    this.elevatorMotor.set(TalonFXControlMode.PercentOutput, isElevatorDown()&&power<0?0:power);
+  public void setElevatorPosition(double position) {
+    if (position > MAX_ELEVATOR_DIST) {
+      position = MAX_ELEVATOR_DIST;
+    }
+    if (position < MIN_ELEVATOR_DIST) {
+      position = MIN_ELEVATOR_DIST;
+    }
+    this.elevatorPID.setSetpoint(position);
   }
-  public boolean isElevatorDown() {
-    return !this.limitSwitch.get();
+  public void setElevatorPower(double power) {
+    if (Math.abs(power) > ElevatorConstants.ELEVATOR_MOTOR_CAP) {
+      if (power>0) {
+        power = ElevatorConstants.ELEVATOR_MOTOR_CAP;
+      }
+      if (power<0) {
+        power = -ElevatorConstants.ELEVATOR_MOTOR_CAP;
+      }
+    }
+
+    if ((this.isElevatorDown() && power < 0)||
+      (this.isElevatorUp() && power > 0)) {
+       power = 0;
+    }
+
+    this.elevatorMotor.set(TalonFXControlMode.PercentOutput, power);
+    SmartDashboard.putNumber("Elevator Power", power);
   }
-  public void setAxisPower(double power) {
-    this.axisMotor.set(power);
+  private double getDistanceSensorVolt() {
+    double v = this.distSensor.getVoltage(); // Volt
+    double distance = (7.16*Math.pow(v,4) - 51.259*Math.pow(v,3) + 139.81*Math.pow(v,2) - 181.23*v + 100.51);
+    return distance;
   }
-  public void setIntakePower(double power) {
-    this.intakeMotor.set(power);
+  public double getElevatorDistance() {
+    return getDistanceSensorVolt(); // TODO: Add func for getting distance
   }
-  public void zeroMotors() {
-    this.elevatorMotor.set(TalonFXControlMode.PercentOutput, 0);
-  }
+  public boolean isElevatorDown() { return !this.limitSwitchClosed.get();}
+  public boolean isElevatorUp() { return !this.limitSwitchOpen.get(); }
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Absolute Encoder",this.absAxisEncoder.getAbsolutePosition());
-    SmartDashboard.putBoolean("Limit switch Pressed", isElevatorDown());
+    if(OI.getAButton()) {
+      position = MAX_ELEVATOR_DIST;
+    }
+    else {
+      position = MIN_ELEVATOR_DIST;
+    }
+    setElevatorPosition(position);
+
+    double elevatorPower = elevatorPID.calculate(getElevatorDistance());
+
+    this.setElevatorPower(elevatorPower);
+
+    SmartDashboard.putNumber("Setpoint Elevator", position);
+    SmartDashboard.putNumber("Distance", this.getElevatorDistance());
+    SmartDashboard.putBoolean("Elevator Down", isElevatorDown());
+    SmartDashboard.putBoolean("Elevator Up", isElevatorUp());
   }
 }

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
 import frc.team3835.robot.subsystems.ElevatorSubsystem;
-
+import frc.team3835.robot.subsystems.IntakeSubsystem;
 
 
 /**
@@ -23,7 +23,8 @@ public class RobotContainer
 {
     
     private ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
-//    private ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     public RobotContainer()
     {
         // Configure the trigger bindings
@@ -42,7 +43,6 @@ public class RobotContainer
      */
     private void configureBindings()
     {
-        
     }
     
     
