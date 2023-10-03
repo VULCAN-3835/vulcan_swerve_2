@@ -23,10 +23,6 @@ public class LedController { // TODO: document every file in this package (and s
         return ledBuffer;
     }
 
-    public void updateBuffer(){
-        normalizeBuffer();
-    }
-
     public void normalizeBuffer(){
         double amp_sum = 0;
         for (int i = 0; i < this.ledBuffer.getLength(); i++) {

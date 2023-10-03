@@ -24,6 +24,6 @@ public class LedSectionController extends LedController{
                 i++;
             }
         }
-        super.updateBuffer();
+        //super.updateBuffer();
     }
 }
