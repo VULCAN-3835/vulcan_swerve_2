@@ -26,19 +26,19 @@ public class StabilizeRamp extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double pitch = (swerveChassisSubsystem.getRoll());
+        double pitch = (swerveChassisSubsystem.getPitch());
         SmartDashboard.putNumber("Pitch Degrees", pitch);
 
         if (pitch > PITCH_DEADZONE) {
-            swerveChassisSubsystem.drive(SPEEDFORWARD,0,0, false);
+            swerveChassisSubsystem.drive(SPEEDFORWARD,0,0, true);
             counter = 0;
         }
         else if (pitch < -PITCH_DEADZONE) {
-            swerveChassisSubsystem.drive(SPEEDBACKWARDS,0,0, false);
+            swerveChassisSubsystem.drive(SPEEDBACKWARDS,0,0, true);
             counter = 0;
         }
         else{
-            swerveChassisSubsystem.drive(0,0,0.0001, false);
+            swerveChassisSubsystem.drive(0,0,0.0001, true);
             counter++;
         }
 

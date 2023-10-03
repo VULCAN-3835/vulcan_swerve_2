@@ -144,6 +144,12 @@ public class ChassisSubsystem extends SubsystemBase {
       this.swerve_modules[wheels.left_back.ordinal()].stopMotors();
       this.swerve_modules[wheels.right_back.ordinal()].stopMotors();
   }
+  public void resetImu() {
+      this.imu.reset();
+  }
+  public double getPitch() {
+      return this.imu.getPitch();
+  }
 
   private Pose2d getPose2d() {
       return this.robotPose;
@@ -223,6 +229,8 @@ public class ChassisSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Left Joystick Y", OI.getLeftJoystickY());
       SmartDashboard.putNumber("Right Joystick X", OI.getRightJoystickX());
       SmartDashboard.putNumber("Right Joystick Y", OI.getRightJoystickY());
+
+      SmartDashboard.putNumber("Pitch", this.imu.getPitch());
 
       SmartDashboard.putNumber("Left Front Velocity",this.swerve_modules[wheels.left_front.ordinal()].GetVel());
       SmartDashboard.putNumber("Left Back Velocity",this.swerve_modules[wheels.left_back.ordinal()].GetVel());

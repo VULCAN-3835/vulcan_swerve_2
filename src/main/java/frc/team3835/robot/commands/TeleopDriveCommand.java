@@ -4,6 +4,7 @@
 
 package frc.team3835.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.OI;
@@ -31,6 +32,9 @@ public class TeleopDriveCommand extends CommandBase {
   public void execute() {
     double normal = this.intakeSubsystem.isClosed() ? Constants.SwerveConstants.maxDrivingVelocity : Constants.SwerveConstants.maxPlacingVelocity;
     this.swerveDrive.drive(OI.driveX()*normal,OI.driveY()*normal,OI.driveRot()*normal,true);
+    SmartDashboard.putNumber("X Joystick", OI.driveX()*normal);
+    SmartDashboard.putNumber("Y Joystick", OI.driveY()*normal);
+    SmartDashboard.putNumber("Rot Joystick", OI.driveRot()*normal);
   }
 
   // Called once the command ends or is interrupted.

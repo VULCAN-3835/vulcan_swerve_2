@@ -8,6 +8,7 @@ package frc.team3835.robot;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.team3835.robot.commands.StabilizeRamp;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
 import frc.team3835.robot.subsystems.ElevatorSubsystem;
 import frc.team3835.robot.subsystems.IntakeSubsystem;
@@ -112,8 +113,13 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An example command will be run in autonomous
-
-        return null;
+        return new SequentialCommandGroup( new ParallelRaceGroup(new WaitCommand(2.65),
+                new StartEndCommand(() -> this.chassisSubsystem.drive(-1.15  ,-0,-0, true),
+                        () -> this.chassisSubsystem.stopModules(), this.chassisSubsystem)),
+        new StabilizeRamp(chassisSubsystem),
+                new ParallelRaceGroup(new WaitCommand(0.1),
+                        new StartEndCommand(() -> this.chassisSubsystem.drive(0  ,0,0.05, true),
+                                () -> this.chassisSubsystem.stopModules(), this.chassisSubsystem)));
 //        return new ParallelRaceGroup(
 //                new WaitCommand(3),
 //                new StartEndCommand(

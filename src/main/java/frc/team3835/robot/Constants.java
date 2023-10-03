@@ -88,7 +88,7 @@ public final class Constants
         public static final int LEFT_BACK_ENC = 33; // CAN ID
         public static final int RIGHT_BACK_ENC = 31; // CAN ID
         // Offsets for absolute encoders:
-        public static final double LEFT_FRONT_ZERO = 7.55859375; //5.71
+        public static final double LEFT_FRONT_ZERO = 11.85859375; //5.71
         public static final double RIGHT_FRONT_ZERO = -67.32421875; //-63.63
         public static final double LEFT_BACK_ZERO = -125.947265625; //-127.08
         public static final double RIGHT_BACK_ZERO =  77.51953125; //76.9
