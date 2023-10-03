@@ -37,7 +37,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         this.absAxisEncoder.setPositionOffset(Constants.ElevatorConstants.ABS_ENCODER_OFFSET);
 
-        this.axisPID = new PIDController(0.005,0,0);
+        this.axisPID = new PIDController(0.007,0,0);
 
         this.axisPID.setTolerance(3);
 

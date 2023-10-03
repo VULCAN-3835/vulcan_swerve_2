@@ -10,6 +10,8 @@ public class LedController { // TODO: document every file in this package (and s
     protected AddressableLEDBuffer ledBuffer; // WIP's AddressableLED
     private static final double AMPS_PER_LED = 0.02;
     public LedController(int total_length, double power_supply){
+        System.out.println("LED Controller init");
+
         this.power_supply = power_supply;
 
         this.ledBuffer = new AddressableLEDBuffer(total_length); // builds the LED strip buffer

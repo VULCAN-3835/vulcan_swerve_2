@@ -5,14 +5,16 @@
 
 package frc.team3835.robot;
 
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.team3835.robot.commands.Autos.AutonomousConeTaxiStabilize;
-import frc.team3835.robot.commands.Autos.AutonomousCubeTaxiStabilize;
-import frc.team3835.robot.commands.Autos.AutonomousMoveOutStabilize;
-import frc.team3835.robot.commands.Autos.AutonomousMoveStabilize;
+import frc.team3835.robot.commands.Autos.*;
+import frc.team3835.robot.commands.ShootingDriveCommand;
 import frc.team3835.robot.commands.StabilizeRamp;
+import frc.team3835.robot.commands.TeleopDriveCommand;
+import frc.team3835.robot.commands.TurnBase;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
 import frc.team3835.robot.subsystems.ElevatorSubsystem;
 import frc.team3835.robot.subsystems.IntakeSubsystem;
@@ -32,7 +34,7 @@ public class RobotContainer
     private ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     private ChassisSubsystem chassisSubsystem = new ChassisSubsystem(intakeSubsystem);
 
-    LedSubsystem ledSubsystem;
+    private LedSubsystem ledSubsystem = new LedSubsystem();
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
@@ -41,7 +43,13 @@ public class RobotContainer
         Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,50});
         Constants.ElevatorConstants.positionMap.put("Score Low", new double[] {0,0});
         Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,7});
-        this.ledSubsystem = new LedSubsystem();
+        Constants.ElevatorConstants.positionMap.put("Score Cube High", new double[] {28.5,80});
+
+//        if (RobotState.isEnabled()) {
+//            this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
+//            this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
+//            this.chassisSubsystem.setDefaultCommand(new TeleopDriveCommand(this.chassisSubsystem,this.intakeSubsystem));
+//        }
         // Configure the trigger bindings
         configureBindings();
     }
@@ -71,6 +79,9 @@ public class RobotContainer
         Trigger triggerXPressed = new Trigger(OI::getXButtonPressed);
         Trigger triggerXReleased = new Trigger(OI::getXButtonReleased);
 
+        Trigger triggerBackPressed = new Trigger(OI::getBackButtonPressed);
+        Trigger triggerStartPressed = new Trigger(OI::getStartButtonPressed);
+
         triggerAPressed.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Score Low")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Score Low")[0]);
@@ -83,10 +94,12 @@ public class RobotContainer
         triggerBPressed.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[0]);
+            this.chassisSubsystem.setDefaultCommand(new ShootingDriveCommand(this.chassisSubsystem,this.intakeSubsystem));
         }));
         triggerBReleased.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
+            this.chassisSubsystem.setDefaultCommand(new TeleopDriveCommand(this.chassisSubsystem,this.intakeSubsystem));
         }));
 
         triggerYPressed.onTrue(new InstantCommand(() -> {
@@ -110,6 +123,12 @@ public class RobotContainer
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
             this.intakeSubsystem.setIntakePower(0);
         }));
+
+
+        triggerBackPressed.onTrue(new InstantCommand(() -> {
+            this.chassisSubsystem.resetImu();
+        }));
+        triggerStartPressed.toggleOnTrue(new StabilizeRamp(this.chassisSubsystem));
     }
     
     
@@ -121,7 +140,7 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An example command will be run in autonomous
-        return new AutonomousCubeTaxiStabilize(this.chassisSubsystem,this.intakeSubsystem,this.elevatorSubsystem);
+        return new AutonomousCubeHighTaxiStabilize(this.chassisSubsystem,this.intakeSubsystem,this.elevatorSubsystem);
 //        return new ParallelRaceGroup(
 //                new WaitCommand(3),
 //                new StartEndCommand(

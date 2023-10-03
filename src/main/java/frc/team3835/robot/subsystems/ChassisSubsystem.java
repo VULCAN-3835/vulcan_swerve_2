@@ -148,6 +148,9 @@ public class ChassisSubsystem extends SubsystemBase {
       this.swerve_modules[wheels.left_back.ordinal()].stopMotors();
       this.swerve_modules[wheels.right_back.ordinal()].stopMotors();
   }
+  public double getHeading() {
+      return this.imu.getYaw();
+  }
   public void resetImu() {
       this.imu.reset();
   }

@@ -34,8 +34,8 @@ public class LedSubsystem extends SubsystemBase {
 
     public LedSubsystem(){
         this.led = new AddressableLED(PWM_PORT);
-        this.led.setLength(88);
-        this.ledController = new RobotLedController(88, 2);
+        this.led.setLength(87);
+        this.ledController = new RobotLedController(87, 2);
         this.led.start();
 
 
