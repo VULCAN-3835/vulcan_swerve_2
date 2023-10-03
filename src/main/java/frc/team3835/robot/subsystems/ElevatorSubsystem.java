@@ -52,7 +52,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     if (position < MIN_ELEVATOR_DIST) {
       position = MIN_ELEVATOR_DIST;
     }
-    this.elevatorPID.setSetpoint(position);
+    this.position = position;
   }
   public void setElevatorPower(double power) {
     if (Math.abs(power) > ElevatorConstants.ELEVATOR_MOTOR_CAP) {
@@ -85,18 +85,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(OI.getAButton()) {
-      position = MAX_ELEVATOR_DIST;
-    }
-    else {
-      position = MIN_ELEVATOR_DIST;
-    }
-    setElevatorPosition(position);
+//    if(OI.getAButton()) {
+//      position = MAX_ELEVATOR_DIST;
+//    }
+//    else {
+//      position = MIN_ELEVATOR_DIST;
+//    }
 
+    this.elevatorPID.setSetpoint(this.position);
     double elevatorPower = elevatorPID.calculate(getElevatorDistance());
-
     this.setElevatorPower(elevatorPower);
 
+    // Limit switches + Dist sensor sanity check
     SmartDashboard.putNumber("Setpoint Elevator", position);
     SmartDashboard.putNumber("Distance", this.getElevatorDistance());
     SmartDashboard.putBoolean("Elevator Down", isElevatorDown());

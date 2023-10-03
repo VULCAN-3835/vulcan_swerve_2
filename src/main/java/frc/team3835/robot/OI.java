@@ -55,9 +55,31 @@ public class OI {
      public static boolean getRightBumper() {
         return xboxController.getRightBumper();
      }
-     public static boolean getAButton() {
-        return xboxController.getAButton();
+     public static boolean getAButtonPressed() {
+        return xboxController.getAButtonPressed();
      }
+     public static boolean getAButtonReleased() {
+        return xboxController.getAButtonReleased();
+     }
+     public static boolean getBButtonPressed() {
+        return xboxController.getBButtonPressed();
+     }
+     public static boolean getBButtonReleased() {
+        return xboxController.getBButtonReleased();
+     }
+     public static boolean getYButtonPressed() {
+        return xboxController.getYButtonPressed();
+     }
+    public static boolean getYButtonReleased() {
+        return xboxController.getYButtonReleased();
+    }
+    public static boolean getXButtonPressed(){
+        return xboxController.getXButtonPressed();
+    }
+    public static boolean getXButtonReleased() {
+        return xboxController.getXButtonReleased();
+    }
+
 
 
     public static double driveY() {

@@ -9,6 +9,10 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -108,6 +112,7 @@ public final class Constants
                         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)); //Right back
     }
     public static class ElevatorConstants {
+        public static final Map<String, double[]> positionMap = new HashMap<>();
         public static final int ELEVATOR_MOTOR = 40; // CAN ID
         public static final int AXIS_MOTOR = 41;
         public static final int INTAKE_MOTOR = 42;
@@ -124,6 +129,7 @@ public final class Constants
 
         public static final double ABS_ENCODER_OFFSET = 0.88;
         public static final double AXIS_MOTOR_CAP = 0.4;
+        public static final double INTAKE_POWER = 0.7;
         public static final double ELEVATOR_MOTOR_CAP = 0.7;
 
 

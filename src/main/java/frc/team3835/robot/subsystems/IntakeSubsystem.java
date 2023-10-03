@@ -19,7 +19,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private final double MIN_AXIS_ANGLE = 2; // TODO: Find min and max angles
     private final double MAX_AXIS_ANGLE = 155;
 
-    private double position = 155;
+    private double intakePower;
+    private double position = MAX_AXIS_ANGLE;
 
     public IntakeSubsystem() {
         this.axisMotor = new CANSparkMax(Constants.ElevatorConstants.AXIS_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -48,7 +49,7 @@ public class IntakeSubsystem extends SubsystemBase {
         if (position < MIN_AXIS_ANGLE) {
             position = MIN_AXIS_ANGLE;
         }
-        this.axisPID.setSetpoint(position);
+        this.position = position;
     }
     private void setAxisPower(double power) {
         if (Math.abs(power) > Constants.ElevatorConstants.AXIS_MOTOR_CAP) {
@@ -69,20 +70,23 @@ public class IntakeSubsystem extends SubsystemBase {
 
     }
     public void setIntakePower(double power) {
-        this.intakeMotor.set(power);
+        this.intakePower = power;
+    }
+    public boolean isAtSetpoint() {
+        return this.axisPID.atSetpoint();
     }
     public double getAxisAngle() {
         double angle = this.absAxisEncoder.getAbsolutePosition();
         return -(angle-Constants.ElevatorConstants.ABS_ENCODER_OFFSET)*360;
     }
     public void periodic() {
-        if(OI.getAButton()) {
-            position = MIN_AXIS_ANGLE;
-        }
-        else {
-            position = MAX_AXIS_ANGLE;
-        }
-        setAxisPosition(position);
+//        if(OI.getAButton()) {
+//            this.position = MIN_AXIS_ANGLE;
+//        }
+//        else {
+//            this.position = MAX_AXIS_ANGLE;
+//        }
+        this.axisPID.setSetpoint(this.position);
         double axisPower = this.axisPID.calculate(getAxisAngle());
 
         this.setAxisPower(axisPower);
@@ -93,12 +97,12 @@ public class IntakeSubsystem extends SubsystemBase {
         else if (OI.getRightBumper()) {
             this.intakeMotor.set(-0.7);
         }
-        else {
-            this.intakeMotor.set(0);
+        // Intake set power
+        if (isAtSetpoint() && !(OI.getRightBumper()||OI.getLeftBumper())){
+            this.intakeMotor.set(this.intakePower);
         }
 
-        SmartDashboard.putNumber("Trigger", (OI.getRightTrigger()-OI.getLeftTrigger())*0.5);
-
+        // Sensor Sanity Check
         SmartDashboard.putNumber("Absolute Encoder", getAxisAngle());
         SmartDashboard.putNumber("Absolute Position", this.absAxisEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("Setpoint", position);
