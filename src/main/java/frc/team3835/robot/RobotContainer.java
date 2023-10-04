@@ -34,15 +34,19 @@ public class RobotContainer
     private ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     private ChassisSubsystem chassisSubsystem = new ChassisSubsystem(intakeSubsystem);
 
-    private LedSubsystem ledSubsystem = new LedSubsystem();
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
+        LedSubsystem.getInstance();
+
         Constants.ElevatorConstants.positionMap.put("Default", new double[] {0,155}); // Elevator Closed, Angle Closed
-        Constants.ElevatorConstants.positionMap.put("Collect Cone", new double[] {0,25});
-        Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,28});
+        Constants.ElevatorConstants.positionMap.put("Collect Cone", new double[] {0,29});
+        Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,38});
         Constants.ElevatorConstants.positionMap.put("Score Low", new double[] {0,0});
         Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,18}); // Angle used to be 7
+        Constants.ElevatorConstants.positionMap.put("Score Mid Cone", new double[] {28.5,7});
+        Constants.ElevatorConstants.positionMap.put("Score Mid Cube", new double[] {28.5,29});
         Constants.ElevatorConstants.positionMap.put("Score Cube High", new double[] {28.5,80});
 
 //        if (RobotState.isEnabled()) {
@@ -89,6 +93,7 @@ public class RobotContainer
         triggerAReleased.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Idle);
         }));
 
         triggerBPressed.onTrue(new InstantCommand(() -> {
@@ -98,28 +103,33 @@ public class RobotContainer
         triggerBReleased.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Idle);
         }));
 
         triggerYPressed.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Collect Cone")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Collect Cone")[0]);
-            this.intakeSubsystem.setIntakePower(-Constants.ElevatorConstants.INTAKE_POWER);
+            this.intakeSubsystem.setIntakePower(-1);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.IntakeCone);
         }));
         triggerYReleased.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
             this.intakeSubsystem.setIntakePower(0);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Idle);
         }));
 
         triggerXPressed.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Collect Cube")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Collect Cube")[0]);
-            this.intakeSubsystem.setIntakePower(Constants.ElevatorConstants.INTAKE_POWER*0.4);
+            this.intakeSubsystem.setIntakePower(0.2);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.IntakeCube);
         }));
         triggerXReleased.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
             this.intakeSubsystem.setIntakePower(0);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Idle);
         }));
 
 
@@ -139,7 +149,8 @@ public class RobotContainer
     {
         // An example command will be run in autonomous
 
-        return new AutonomousCubeTaxiStabilize(this.chassisSubsystem, this.intakeSubsystem, this.elevatorSubsystem);
+        return new AutonomousConeTaxi(this.chassisSubsystem, this.intakeSubsystem, this.elevatorSubsystem);
+//        return new AutonomousConeTaxi(this.chassisSubsystem, this.intakeSubsystem, this.elevatorSubsystem);
 //        return new ParallelRaceGroup(
 //                new WaitCommand(3),
 //                new StartEndCommand(

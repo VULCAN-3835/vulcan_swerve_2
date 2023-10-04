@@ -90,22 +90,22 @@ public class OI {
 
 
     public static double driveY() {
-        if (xboxController.isConnected()) {
-            return -getLeftJoystickX();
-        }
+//        if (xboxController.isConnected()) {
+//            return -getLeftJoystickX();
+//        }
         return -getRightX();
     }
 
     public static double driveX() {
-        if (xboxController.isConnected()) {
-            return getLeftJoystickY();
-        }
+//        if (xboxController.isConnected()) {
+//            return getLeftJoystickY();
+//        }
             return -getRightY();
     }
     public static double driveRot() {
-        if (xboxController.isConnected()) {
-            return -getRightJoystickX();
-        }
+//        if (xboxController.isConnected()) {
+//            return -getRightJoystickX();
+//        }
         return -getLeftX();
     }
 

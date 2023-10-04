@@ -3,12 +3,13 @@ package frc.team3835.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team3835.robot.subsystems.ChassisSubsystem;
+import frc.team3835.robot.subsystems.LedSubsystem;
 
 public class StabilizeRamp extends CommandBase {
     ChassisSubsystem swerveChassisSubsystem;
-    double SPEEDFORWARD = 0.18; //0.08
-    double SPEEDBACKWARDS = -0.18; //-0.08
-    double PITCH_DEADZONE = 5; //6
+    double SPEEDFORWARD = 0.2; //0.08
+    double SPEEDBACKWARDS = -0.2; //-0.08
+    double PITCH_DEADZONE = 6; //6
     boolean stabalized = false;
     int counter;
     public StabilizeRamp(ChassisSubsystem swerveChassisSubsystem) {
@@ -21,6 +22,7 @@ public class StabilizeRamp extends CommandBase {
     @Override
     public void initialize() {
         this.counter = 0;
+        LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Equalizing);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -30,14 +32,17 @@ public class StabilizeRamp extends CommandBase {
         SmartDashboard.putNumber("Pitch Degrees", pitch);
 
         if (pitch > PITCH_DEADZONE) {
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Equalizing);
             swerveChassisSubsystem.drive(SPEEDFORWARD,0,0, true);
             counter = 0;
         }
-        else if (pitch < (-PITCH_DEADZONE)+1) {
+        else if (pitch < -PITCH_DEADZONE) {
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Equalizing);
             swerveChassisSubsystem.drive(SPEEDBACKWARDS,0,0, true);
             counter = 0;
         }
         else{
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.Equalized);
             swerveChassisSubsystem.drive(0,0,0.0001, true);
             counter++;
         }

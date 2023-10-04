@@ -6,6 +6,10 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LedSubsystem extends SubsystemBase {
+    private static LedSubsystem INSTANCE = new LedSubsystem();
+    public static LedSubsystem getInstance(){
+        return LedSubsystem.INSTANCE;
+    }
     private final int PWM_PORT = 4;
     private final Color8Bit RED = new Color8Bit(255, 0, 0);
     private final Color8Bit GREEN = new Color8Bit(0, 255, 0);
@@ -24,7 +28,8 @@ public class LedSubsystem extends SubsystemBase {
     private Operation operation;
     private Color8Bit allianceColor;
 
-    public LedSubsystem(){
+    private LedSubsystem(){
+        System.out.println("LED init");
         this.led = new AddressableLED(PWM_PORT);
         this.led.setLength(87);
         this.ledController = new RobotLedController(87, 2);
@@ -33,6 +38,10 @@ public class LedSubsystem extends SubsystemBase {
         this.operation = Operation.Idle;
         this.allianceColor = WHITE;
 
+    }
+
+    public void setOperation(Operation new_operation){
+        this.operation = new_operation;
     }
 
     private void updateAlliance(){
@@ -74,10 +83,10 @@ public class LedSubsystem extends SubsystemBase {
                 break;
             default:{
                 if (DriverStation.isAutonomousEnabled()){
-                    this.ledController.breathingColor(1, this.allianceColor);
+                    this.ledController.breathingColor(0.5, this.allianceColor);
                 }
                 else { // its Teleop
-                    this.ledController.breathingColor(2, this.allianceColor);
+                    this.ledController.breathingColor(1, this.allianceColor);
                 }
             }
 
@@ -91,7 +100,7 @@ public class LedSubsystem extends SubsystemBase {
             updateBuffer();
         }
         else{
-            this.ledController.trailWaveColor(10, false, this.allianceColor);
+            this.ledController.staticColor(this.allianceColor);
         }
         updateLeds();
     }

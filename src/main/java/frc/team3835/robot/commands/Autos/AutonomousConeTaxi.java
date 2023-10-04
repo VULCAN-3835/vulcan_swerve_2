@@ -6,7 +6,7 @@ import frc.team3835.robot.subsystems.ChassisSubsystem;
 import frc.team3835.robot.subsystems.ElevatorSubsystem;
 import frc.team3835.robot.subsystems.IntakeSubsystem;
 
-public class AutonomousConeTaxiStabilize extends SequentialCommandGroup {
+public class AutonomousConeTaxi extends SequentialCommandGroup {
     ChassisSubsystem chassisSubsystem;
     IntakeSubsystem intakeSubsystem;
     ElevatorSubsystem elevatorSubsystem;
@@ -14,16 +14,16 @@ public class AutonomousConeTaxiStabilize extends SequentialCommandGroup {
 
     // Drives forward at a velocity of 0.6 for 3 second and then stops the modules. Then stabilizes the ramp and for 0.1
     // seconds rotates all the wheels 45 degrees
-    public AutonomousConeTaxiStabilize(ChassisSubsystem chassisSubsystem, IntakeSubsystem intakeSubsystem, ElevatorSubsystem elevatorSubsystem) {
+    public AutonomousConeTaxi(ChassisSubsystem chassisSubsystem, IntakeSubsystem intakeSubsystem, ElevatorSubsystem elevatorSubsystem) {
         this.chassisSubsystem = chassisSubsystem;
         this.intakeSubsystem = intakeSubsystem;
         this.elevatorSubsystem = elevatorSubsystem;
 
         addRequirements(this.chassisSubsystem);
         addCommands(new InstantCommand(() -> {
-            this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[1]);
-            this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[0]);
-        }),
+                    this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[1]);
+                    this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[0]);
+                }),
                 new WaitCommand(3),
                 new InstantCommand(() -> {
                     this.intakeSubsystem.setIntakePower(Constants.ElevatorConstants.INTAKE_POWER);
@@ -33,9 +33,11 @@ public class AutonomousConeTaxiStabilize extends SequentialCommandGroup {
                     this.intakeSubsystem.setIntakePower(0);
                     this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
                     this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
-                }),
+                }) ,// Undo:
                 new WaitCommand(0),
-                new AutonomousMoveStabilize(this.chassisSubsystem) // MoveOut
+                new InstantCommand(() -> this.chassisSubsystem.drive(0.94 ,-0,-0, true)),
+                new WaitCommand(5.9),
+                new InstantCommand(() -> this.chassisSubsystem.drive(0  ,-0,-0, true))
         );
     }
 }

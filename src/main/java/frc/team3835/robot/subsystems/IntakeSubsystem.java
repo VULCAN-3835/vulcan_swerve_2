@@ -40,9 +40,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
         this.absAxisEncoder.setPositionOffset(Constants.ElevatorConstants.ABS_ENCODER_OFFSET);
 
-        this.axisPID = new PIDController(0.007,0,0);
+        this.axisPID = new PIDController(0.0072,0,0);
 
-        this.axisPID.setTolerance(3);
+        this.axisPID.setTolerance(4.5);
 
         setDefaultCommand(null);
     }
@@ -101,9 +101,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
         if (OI.getLeftBumper()) {
             this.intakeMotor.set(Constants.ElevatorConstants.INTAKE_POWER);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.ScoreCone);
         }
         else if (OI.getRightBumper()) {
             this.intakeMotor.set(-Constants.ElevatorConstants.INTAKE_POWER);
+            LedSubsystem.getInstance().setOperation(LedSubsystem.Operation.ScoreCube);
         }
         // Intake set power
         if (isAtSetpoint() && !(OI.getRightBumper()||OI.getLeftBumper())){

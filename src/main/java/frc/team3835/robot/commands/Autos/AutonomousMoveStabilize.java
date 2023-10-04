@@ -20,7 +20,7 @@ public class AutonomousMoveStabilize extends SequentialCommandGroup {
 //                        new StartEndCommand(() -> this.chassisSubsystem.drive(0  ,0,0.05, true),
 //                                () -> this.chassisSubsystem.stopModules(), this.chassisSubsystem)));
         addCommands(new InstantCommand(() -> this.chassisSubsystem.drive(1.15  ,-0,-0, true)),
-                new WaitCommand(2.75),
+                new WaitCommand(2.78),
                 new InstantCommand(() -> this.chassisSubsystem.drive(0  ,-0,-0, true)),
                 new StabilizeRamp(chassisSubsystem),
                 new ParallelRaceGroup(new WaitCommand(0.1),

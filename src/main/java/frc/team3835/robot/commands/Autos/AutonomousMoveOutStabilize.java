@@ -20,14 +20,14 @@ public class AutonomousMoveOutStabilize extends SequentialCommandGroup {
 //                        new StartEndCommand(() -> this.chassisSubsystem.drive(0  ,0,0.05, true),
 //                                () -> this.chassisSubsystem.stopModules(), this.chassisSubsystem)));
         addCommands(new InstantCommand(() -> this.chassisSubsystem.drive(1.2  ,-0,-0, true)),
-                new WaitCommand(2.9),
+                new WaitCommand(2.7),
                 new InstantCommand(() -> this.chassisSubsystem.drive(0  ,-0,-0, true)),
                 new InstantCommand(() -> this.chassisSubsystem.drive(0.4  ,-0,-0, true)),
-                new WaitCommand(3.1),
+                new WaitCommand(2.9),
                 new InstantCommand(() -> this.chassisSubsystem.drive(0  ,-0,-0, true)),
                 new WaitCommand(0.2),
-                new InstantCommand(() -> this.chassisSubsystem.drive(-1.15  ,-0,-0, true)),
-                new WaitCommand(2.35),
+                new InstantCommand(() -> this.chassisSubsystem.drive(-1.2  ,-0,-0, true)),
+                new WaitCommand(2.2),
                 new InstantCommand(() -> this.chassisSubsystem.drive(0  ,-0,-0, true)),
 
                 new StabilizeRamp(chassisSubsystem),

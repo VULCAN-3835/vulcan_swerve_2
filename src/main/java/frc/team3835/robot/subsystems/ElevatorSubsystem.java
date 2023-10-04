@@ -37,9 +37,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     this.limitSwitchOpen = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_OPEN);
     this.distSensor = new AnalogInput(ElevatorConstants.DISTANCE_SENSOR);
 
-    this.elevatorPID = new PIDController(0.12,0,0);
+    this.elevatorPID = new PIDController(0.117,0,0);
 
-    this.elevatorPID.setTolerance(2);
+    this.elevatorPID.setTolerance(2.4);
 
     setDefaultCommand(null);
   }
