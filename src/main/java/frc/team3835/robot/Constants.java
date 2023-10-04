@@ -42,7 +42,7 @@ public final class Constants
         public static final double feedForwardKs = 0.4704 / 12;
         public static final double feedForwardKv = 2.3615 / 12;
 
-        public static final double maxDrivingVelocity = 2.2;
+        public static final double maxDrivingVelocity = 2;
         public static final double maxPlacingVelocity = 0.7;
         public static final double maxAcceleration = 1.5;
 

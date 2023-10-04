@@ -39,10 +39,10 @@ public class RobotContainer
     public RobotContainer()
     {
         Constants.ElevatorConstants.positionMap.put("Default", new double[] {0,155}); // Elevator Closed, Angle Closed
-        Constants.ElevatorConstants.positionMap.put("Collect Cone", new double[] {0,28});
-        Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,50});
+        Constants.ElevatorConstants.positionMap.put("Collect Cone", new double[] {0,25});
+        Constants.ElevatorConstants.positionMap.put("Collect Cube", new double[] {25,28});
         Constants.ElevatorConstants.positionMap.put("Score Low", new double[] {0,0});
-        Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,7});
+        Constants.ElevatorConstants.positionMap.put("Score Mid", new double[] {28.5,18}); // Angle used to be 7
         Constants.ElevatorConstants.positionMap.put("Score Cube High", new double[] {28.5,80});
 
 //        if (RobotState.isEnabled()) {
@@ -94,12 +94,10 @@ public class RobotContainer
         triggerBPressed.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Score Mid")[0]);
-            this.chassisSubsystem.setDefaultCommand(new ShootingDriveCommand(this.chassisSubsystem,this.intakeSubsystem));
         }));
         triggerBReleased.onTrue(new InstantCommand(() -> {
             this.intakeSubsystem.setAxisPosition(Constants.ElevatorConstants.positionMap.get("Default")[1]);
             this.elevatorSubsystem.setElevatorPosition(Constants.ElevatorConstants.positionMap.get("Default")[0]);
-            this.chassisSubsystem.setDefaultCommand(new TeleopDriveCommand(this.chassisSubsystem,this.intakeSubsystem));
         }));
 
         triggerYPressed.onTrue(new InstantCommand(() -> {
@@ -140,7 +138,8 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An example command will be run in autonomous
-        return new AutonomousCubeHighTaxiStabilize(this.chassisSubsystem,this.intakeSubsystem,this.elevatorSubsystem);
+
+        return new AutonomousCubeTaxiStabilize(this.chassisSubsystem, this.intakeSubsystem, this.elevatorSubsystem);
 //        return new ParallelRaceGroup(
 //                new WaitCommand(3),
 //                new StartEndCommand(

@@ -3,6 +3,9 @@ package frc.team3835.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -114,6 +117,8 @@ public class IntakeSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Absolute Encoder", getAxisAngle());
         SmartDashboard.putNumber("Absolute Position", this.absAxisEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("Setpoint Angle", position);
+
+
     }
 }
 

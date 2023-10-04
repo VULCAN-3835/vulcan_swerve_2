@@ -26,7 +26,7 @@ public class AutonomousCubeTaxiStabilize extends SequentialCommandGroup {
                 }),
                 new WaitCommand(3.5),
                 new InstantCommand(() -> {
-                    this.intakeSubsystem.setIntakePower(-Constants.ElevatorConstants.INTAKE_POWER);
+                    this.intakeSubsystem.setIntakePower(-0.5);
                 }),
                 new WaitCommand(0.4),
                 new InstantCommand(() -> {

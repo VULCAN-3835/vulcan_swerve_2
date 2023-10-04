@@ -30,8 +30,6 @@ public class LedSubsystem extends SubsystemBase {
         this.ledController = new RobotLedController(87, 2);
         this.led.start();
 
-
-        this.controlMode = ControlMode.Teleop;
         this.operation = Operation.Idle;
         this.allianceColor = WHITE;
 

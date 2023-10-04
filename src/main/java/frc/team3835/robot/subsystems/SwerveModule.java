@@ -66,7 +66,7 @@ public class SwerveModule {
         this.absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180); // -180 to 180
         this.absEncoder.configMagnetOffset(this.trueZero);
 
-        this.driveMotor.configClosedloopRamp(2);
+        this.driveMotor.configClosedloopRamp(1.6);
         this.driveMotor.configSupplyCurrentLimit(Constants.SwerveConstants.driveSupplyLimit);
 
         this.steerMotor.configSupplyCurrentLimit(Constants.SwerveConstants.angleSupplyLimit);
