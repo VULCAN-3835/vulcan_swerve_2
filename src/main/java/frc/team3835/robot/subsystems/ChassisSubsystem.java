@@ -129,7 +129,7 @@ public class ChassisSubsystem extends SubsystemBase {
      */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     // Sets max acceleration and velocity to wheels
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.ChassisConstants.kMaxSpeedMetersPerSecond);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.SwerveConstants.maxDrivingVelocity);
     
     // Uses the set method of the SwerveModule to declare desired state of the module
     this.swerve_modules[wheels.left_front.ordinal()].set(desiredStates[0]);

@@ -46,6 +46,19 @@ public final class Constants
         public static final double maxPlacingVelocity = 0.7;
         public static final double maxAcceleration = 1.5;
 
+    
+        public static final double kPhysicalMaxSpeedMetersPerSecond = 5;
+        public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = 2;
+        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond =
+                kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
+                
+        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
+        public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
+
+
+
         public static final double steerMotorThreshold = 0.04; // TODO: Check minimul power required to move motor
 
         public static final int angleContinuousCurrentLimit = 25;
@@ -98,8 +111,6 @@ public final class Constants
         public static final boolean LEFT_BACK_INVERTED = false;
         public static final boolean RIGHT_BACK_INVERTED = false;
 
-        // Max speed in meters per second
-        public static final double kMaxSpeedMetersPerSecond = 4;
         // Distance between centers of right and left wheels on robot
         public static final double kTrackWidth = 0.35*2.54;
         // Distance between front and back wheels on robot
